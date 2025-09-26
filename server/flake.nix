@@ -30,7 +30,7 @@
       overlays.default =
         final: prev:
         let
-          jdk = prev.graalvmPackages.graalvm-oracle;
+          jdk = prev.jdk24;
         in
         {
           gradle =

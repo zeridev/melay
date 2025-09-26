@@ -26,14 +26,12 @@ dependencies {
 	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 	// --- Production Database ---
 	runtimeOnly("org.postgresql:postgresql")
 	runtimeOnly("org.postgresql:r2dbc-postgresql")
-
-	// --- Dev Database ---
-	runtimeOnly("io.r2dbc:r2dbc-h2")
 
 	// --- Testing ---
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -52,3 +50,20 @@ kotlin {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+tasks.register<JavaExec>("h2Console") {
+    group = "database"
+    description = "Start the H2 web console"
+
+    // Use the H2 jar from runtimeClasspath
+    classpath = sourceSets["main"].runtimeClasspath
+    mainClass.set("org.h2.tools.Server")
+
+    // Arguments for the H2 console
+    args = listOf(
+        "-web",                // enable web server
+        "-webAllowOthers",     // allow other hosts (optional)
+        "-webPort", "8082"     // default port is 8082
+    )
+}
+
