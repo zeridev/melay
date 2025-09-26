@@ -30,8 +30,12 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 	// --- Production Database ---
-	runtimeOnly("org.postgresql:postgresql")
 	runtimeOnly("org.postgresql:r2dbc-postgresql")
+
+	// --- Database Migrations ---
+	implementation("org.flywaydb:flyway-core")
+	implementation("org.flywaydb:flyway-database-postgresql:11.13.1")
+	implementation("org.postgresql:postgresql")
 
 	// --- Testing ---
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -39,6 +43,8 @@ dependencies {
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.13")
 }
 
 kotlin {
@@ -49,21 +55,5 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
-}
-
-tasks.register<JavaExec>("h2Console") {
-    group = "database"
-    description = "Start the H2 web console"
-
-    // Use the H2 jar from runtimeClasspath
-    classpath = sourceSets["main"].runtimeClasspath
-    mainClass.set("org.h2.tools.Server")
-
-    // Arguments for the H2 console
-    args = listOf(
-        "-web",                // enable web server
-        "-webAllowOthers",     // allow other hosts (optional)
-        "-webPort", "8082"     // default port is 8082
-    )
 }
 
