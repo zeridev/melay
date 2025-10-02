@@ -1,0 +1,6 @@
+server:
+  port: 8090
+
+federation:
+  peer-list:
+    - localhost:8080
