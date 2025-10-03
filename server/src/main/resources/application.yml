@@ -1,7 +1,7 @@
 spring:
   application:
     name: "melay"
-
-logging:
-  level:
-    web: DEBUG
+  rsocket:
+    server:
+      transport: tcp
+      port: 7000

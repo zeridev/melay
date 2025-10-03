@@ -1,6 +1,11 @@
 server:
   port: 8090
 
+spring:
+  rsocket:
+    server:
+      port: 7001
+
 federation:
   peer-list:
-    - localhost:8080
+    - localhost:7000

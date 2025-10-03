@@ -1,48 +1,25 @@
 package eu.dezeekees.melay.federation.client
 
 import eu.dezeekees.melay.federation.model.FederationMessage
-import org.springframework.messaging.converter.MappingJackson2MessageConverter
-import org.springframework.messaging.simp.stomp.StompFrameHandler
-import org.springframework.messaging.simp.stomp.StompSession
-import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter
-import org.springframework.web.socket.client.standard.StandardWebSocketClient
-import org.springframework.web.socket.messaging.WebSocketStompClient
-import org.springframework.messaging.simp.stomp.StompHeaders
-import java.lang.reflect.Type
+import org.springframework.messaging.rsocket.RSocketRequester
+import org.springframework.messaging.rsocket.retrieveFlux
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
-class FederationClient(private val url: String) {
+class FederationClient(
+	private val requester: RSocketRequester
+) {
+	fun send(message: FederationMessage) : Mono<Void> {
+		return requester
+			.route("federation.send")
+			.data(message)
+			.send()
+	}
 
-    private val stompClient = WebSocketStompClient(StandardWebSocketClient()).apply {
-        messageConverter = MappingJackson2MessageConverter()
-    }
-
-    private var session: StompSession? = null 
-
-    fun connect() {
-        stompClient.connectAsync(url, object : StompSessionHandlerAdapter() {
-            override fun afterConnected(session: StompSession, headers: StompHeaders) {
-                this@FederationClient.session = session
-                println("Connected to federation peer at $url")
-				
-				session.subscribe("/topic/federation", object : StompFrameHandler {
-					override fun getPayloadType(headers: StompHeaders): Type {
-						return FederationMessage::class.java
-					}
-
-					override fun handleFrame(headers: StompHeaders, payload: Any?) {
-						val message = payload as? FederationMessage
-						if (message != null) {
-							println("Received from peer: $message")
-							// TODO: route locally
-						}
-					}
-				})
-            }
-        })
-    }
-
-    fun send(message: FederationMessage) {
-        session?.send("/app/federation", message)
-    }
+	fun stream(): Flux<FederationMessage> {
+		return requester
+			.route("federation.stream")
+			.retrieveFlux()
+	}
 }
 
