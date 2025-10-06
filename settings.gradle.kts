@@ -35,3 +35,4 @@ plugins {
 
 include("server")
 include("app")
+include("common")

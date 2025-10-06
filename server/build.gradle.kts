@@ -12,6 +12,8 @@ java {
 }
 
 dependencies {
+    implementation(project(":common"))
+
     implementation(libs.springdoc.openapi.webflux.ui)
     implementation(libs.spring.boot.starter.data.r2dbc)
     implementation(libs.spring.boot.starter.webflux)
