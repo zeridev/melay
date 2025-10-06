@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: "melay"
+  rsocket:
+    server:
+      transport: tcp
+      port: 7000
