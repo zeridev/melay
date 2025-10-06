@@ -1,22 +1,14 @@
 plugins {
-	kotlin("jvm") version "2.2.10"
-	kotlin("plugin.spring") version "2.2.10"
-	id("org.springframework.boot") version "4.0.0-M3"
-	id("io.spring.dependency-management") version "1.1.7"
+	kotlin("jvm")
+	kotlin("plugin.spring")
+	id("org.springframework.boot")
+	id("io.spring.dependency-management")
 }
-
-group = "eu.dezeekees"
-version = "0.0.1-SNAPSHOT"
-description = "An open source decentralized messaging platform"
 
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(24)
 	}
-}
-
-repositories {
-	mavenCentral()
 }
 
 dependencies {
@@ -30,7 +22,7 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
 	// --- Rsocket ---
-	implementation("org.springframework.boot:spring-boot-starter-rsocket:4.0.0-M3")
+	implementation("org.springframework.boot:spring-boot-starter-rsocket")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
