@@ -1,94 +1,93 @@
 {
-  description = "A Nix-flake-based Kotlin + Gradle dev environment with GraalVM";
+  description = "A Nix-flake-based Kotlin + Gradle + Android dev environment with GraalVM";
 
-  inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
+  };
 
-  outputs =
-    inputs:
-    let
-      supportedSystems = [
-        "x86_64-linux"
-        "aarch64-linux"
-        "x86_64-darwin"
-        "aarch64-darwin"
-      ];
+  outputs = { self, nixpkgs, android-nixpkgs }: let
+    supportedSystems = [
+      "x86_64-linux"
+      "aarch64-linux"
+      "x86_64-darwin"
+      "aarch64-darwin"
+    ];
 
-      forEachSupportedSystem =
-        f:
-        inputs.nixpkgs.lib.genAttrs supportedSystems (
-          system:
-          f {
-            pkgs = import inputs.nixpkgs {
-              inherit system;
-			  config.allowUnfree = true;
-              overlays = [ inputs.self.overlays.default ];
+    forEachSupportedSystem = f:
+      nixpkgs.lib.genAttrs supportedSystems (system:
+        f {
+          pkgs = import nixpkgs {
+            inherit system;
+            config = {
+              allowUnfree = true;
             };
-          }
-        );
-    in
-    {
-      overlays.default =
-        final: prev:
-        let
-          jdk = prev.jdk24;
-        in
-        {
-          gradle =
-            if prev ? gradle_9 then
-              prev.gradle_9.override { java = jdk; }
-            else
-              prev.gradle.override { java = jdk; };
-
-          kotlin = prev.kotlin.override { jre = jdk; };
-
-          # Expose the JDK itself explicitly so you can add it to devShell
-          graalvm = jdk;
-        };
-
-      devShells = forEachSupportedSystem (
-        { pkgs }:
-        {
-          default = pkgs.mkShell {
-            packages = with pkgs; [
-              gcc
-              gradle
-              kotlin
-              graalvm
-              ncurses
-              patchelf
-              zlib
-			  
-			  libGL
-			  xorg.libX11
-            ];
-
-			JAVA_TOOL_OPTIONS = "--enable-native-access=ALL-UNNAMED";
-			SPRING_PROFILES_ACTIVE= "dev";
-
-			shellHook = ''
-				# Define colorsRED
-				RED="\033[31m"
-				GREEN="\033[32m"
-				BLUE="\033[34m"
-				YELLOW="\033[33m"
-				RESET="\033[0m"
-
-				# Use shell variables with single $ inside the string
-				echo -e "$RED Java:    $(java -version 2>&1 | sed -n '2p') $RESET"
-				echo -e "$GREEN Kotlin:  $(kotlinc -version 2>&1 | sed -n '2p') $RESET"
-				echo -e "$BLUE Gradle:  $(gradle -version 2>&1 | head -n4 | tail -n1) $RESET"
-				echo -e "$YELLOW Welcome to the GraalVM + Kotlin devshell! $RESET"
-
-				export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${
-					pkgs.lib.makeLibraryPath [
-						pkgs.libGL
-						pkgs.xorg.libX11
-					]
-				};
-			'';
           };
         }
       );
-    };
-}
+  in
+  {
+	packages = forEachSupportedSystem ({ pkgs }: {
+      idea-launcher = pkgs.writeShellScriptBin "idea" ''
+        exec ${pkgs.jetbrains.idea-ultimate}/bin/idea-ultimate \
+          -Dawt.toolkit.name=WLToolkit "$@" \
+          >/dev/null 2>&1 &
+      '';
+    });
+	
+    devShells = forEachSupportedSystem ({ pkgs }:
+      {
+        default = pkgs.mkShell {
+          packages = with pkgs; [
+            gcc
+            gradle_9
+            kotlin
+            jdk24
+            ncurses
+            patchelf
+            zlib
+            libGL
+            xorg.libX11
+			jetbrains.idea-ultimate
+			self.packages.${pkgs.system}.idea-launcher
 
+            # Android SDK + NDK
+            (android-nixpkgs.sdk.x86_64-linux (sdkPkgs: with sdkPkgs; [
+              cmdline-tools-latest
+              build-tools-36-0-0
+              platform-tools
+              platforms-android-36
+              emulator
+            ]))
+          ];
+
+          JAVA_TOOL_OPTIONS = "--enable-native-access=ALL-UNNAMED";
+          SPRING_PROFILES_ACTIVE = "dev";
+
+          shellHook = ''
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${
+              pkgs.lib.makeLibraryPath [
+                pkgs.libGL
+                pkgs.xorg.libX11
+              ]
+            }
+
+            # Java from Nix
+            export JAVA_HOME=${pkgs.jdk24}/lib/openjdk
+            export PATH=$JAVA_HOME/bin:$PATH
+
+            # Gradle from Nix
+            export GRADLE_HOME=${pkgs.gradle_9}/lib/gradle
+            export PATH=$GRADLE_HOME/bin:$PATH
+
+            # Kotlin (if installed separately)
+            export PATH=${pkgs.kotlin}/bin:$PATH
+
+            # Optional: force IntelliJ to pick up the local Gradle instead of wrapper
+            export ORG_GRADLE_PROJECT_gradleUserHome=$GRADLE_HOME
+          '';
+        };
+      }
+    );
+  };
+}

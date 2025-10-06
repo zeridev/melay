@@ -12,34 +12,27 @@ java {
 }
 
 dependencies {
-	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.8.13")
+    implementation(libs.springdoc.openapi.webflux.ui)
+    implementation(libs.spring.boot.starter.data.r2dbc)
+    implementation(libs.spring.boot.starter.webflux)
+    implementation(libs.spring.boot.starter.rsocket)
+    implementation(libs.jackson.module.kotlin)
+    implementation(libs.reactor.kotlin.extensions)
+    implementation(libs.kotlin.reflect)
+    implementation(libs.kotlinx.coroutines.reactor)
 
-	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-	implementation("org.springframework.boot:spring-boot-starter-webflux")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    developmentOnly(libs.spring.boot.devtools)
 
-	// --- Rsocket ---
-	implementation("org.springframework.boot:spring-boot-starter-rsocket")
+    runtimeOnly(libs.r2dbc.postgresql)
+    implementation(libs.flyway.core)
+    implementation(libs.flyway.database.postgresql)
+    implementation(libs.postgresql)
 
-	developmentOnly("org.springframework.boot:spring-boot-devtools")
-
-	// --- Production Database ---
-	runtimeOnly("org.postgresql:r2dbc-postgresql")
-
-	// --- Database Migrations ---
-	implementation("org.flywaydb:flyway-core")
-	implementation("org.flywaydb:flyway-database-postgresql:11.13.1")
-	implementation("org.postgresql:postgresql")
-
-	// --- Testing ---
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("io.projectreactor:reactor-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.reactor.test)
+    testImplementation(libs.kotlin.testJunit)
+    testImplementation(libs.kotlinx.coroutines.reactor)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 kotlin {
