@@ -34,10 +34,20 @@
           >/dev/null 2>&1 &
       '';
     });
-	
+
     devShells = forEachSupportedSystem ({ pkgs }:
       {
-        default = pkgs.mkShell {
+        default =
+        let
+          androidSdk = android-nixpkgs.sdk.${pkgs.system} (sdkPkgs: with sdkPkgs; [
+            cmdline-tools-latest
+            build-tools-36-0-0
+            platform-tools
+            platforms-android-36
+            emulator
+          ]);
+        in
+        pkgs.mkShell {
           packages = with pkgs; [
             gcc
             gradle_9
@@ -52,13 +62,7 @@
 			self.packages.${pkgs.system}.idea-launcher
 
             # Android SDK + NDK
-            (android-nixpkgs.sdk.x86_64-linux (sdkPkgs: with sdkPkgs; [
-              cmdline-tools-latest
-              build-tools-36-0-0
-              platform-tools
-              platforms-android-36
-              emulator
-            ]))
+            androidSdk
           ];
 
           JAVA_TOOL_OPTIONS = "--enable-native-access=ALL-UNNAMED";
@@ -79,6 +83,10 @@
             # Gradle from Nix
             export GRADLE_HOME=${pkgs.gradle_9}/lib/gradle
             export PATH=$GRADLE_HOME/bin:$PATH
+
+            # Android Home
+            export ANDROID_HOME=${androidSdk}/share/android-sdk
+            export PATH=ANDROID_HOME/bin:$PATH
 
             # Kotlin (if installed separately)
             export PATH=${pkgs.kotlin}/bin:$PATH
