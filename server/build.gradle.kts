@@ -22,6 +22,8 @@ dependencies {
     implementation(libs.reactor.kotlin.extensions)
     implementation(libs.kotlin.reflect)
     implementation(libs.kotlinx.coroutines.reactor)
+    implementation(libs.spring.boot.starter.security)
+    implementation(libs.nimbus.jose.jwt)
 
     developmentOnly(libs.spring.boot.devtools)
 
