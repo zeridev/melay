@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.util
+package eu.dezeekees.melay.server.security
 
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader

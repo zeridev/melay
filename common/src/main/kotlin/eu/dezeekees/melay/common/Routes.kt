@@ -6,6 +6,7 @@ object Routes {
 
         object Auth {
             const val NAME = "${Api.NAME}/auth";
+            const val LOGIN = "${Auth.NAME}/login";
         }
 
         object User {

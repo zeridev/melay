@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.support.WebExchangeBindException
 import reactor.core.publisher.Mono
 
 @ControllerAdvice
@@ -15,19 +16,27 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler
     fun handleNotFoundException(e: NotFoundException): Mono<ResponseEntity<Map<String, String>>> {
-        val body = mapOf("error: " to e.message.orEmpty())
+        val body = mapOf("errors" to e.message.orEmpty())
         return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body(body))
     }
 
     @ExceptionHandler
-    fun handleNotFoundException(e: BadRequestException): Mono<ResponseEntity<Map<String, String>>> {
-        val body = mapOf("error: " to e.message.orEmpty())
+    fun handleBadRequestException(e: BadRequestException): Mono<ResponseEntity<Map<String, String>>> {
+        val body = mapOf("errors" to e.message.orEmpty())
         return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body))
+    }
+
+    @ExceptionHandler(WebExchangeBindException::class)
+    fun handleValidationError(ex: WebExchangeBindException): ResponseEntity<Map<String, Any>> {
+        val errors = ex.bindingResult.fieldErrors.map { "${it.field}: ${it.defaultMessage}" }
+        return ResponseEntity
+            .status(HttpStatus.BAD_REQUEST)
+            .body(mapOf("errors" to errors))
     }
 
     @ExceptionHandler
     fun handleGenericException(e: Exception): Mono<ResponseEntity<Map<String, String>>> {
-        val body = mapOf("error: " to "Internal Server Error")
+        val body = mapOf("errors " to "Internal Server Error")
         logger.error(e.message, e)
         return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body))
     }

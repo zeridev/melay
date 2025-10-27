@@ -3,6 +3,7 @@ package eu.dezeekees.melay.server.controller
 import eu.dezeekees.melay.common.Routes
 import eu.dezeekees.melay.server.dto.request.CreateUserRequest
 import eu.dezeekees.melay.server.service.UserService
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -17,6 +18,6 @@ class UserController(
 ) {
 
     @PostMapping
-    fun create(@RequestBody request: CreateUserRequest) = userService.create(request)
+    fun create(@Valid @RequestBody request: CreateUserRequest) = userService.create(request)
         .then(Mono.just(ResponseEntity.ok()))
 }
