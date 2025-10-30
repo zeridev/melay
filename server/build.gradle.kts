@@ -36,7 +36,8 @@ dependencies {
     testImplementation(libs.reactor.test)
     testImplementation(libs.kotlin.testJunit)
     testImplementation(libs.kotlinx.coroutines.reactor)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(libs.mockito.kotlin)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 kotlin {

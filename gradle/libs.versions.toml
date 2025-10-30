@@ -11,8 +11,8 @@ androidx-espresso = "3.7.0"
 androidx-lifecycle = "2.9.5"
 androidx-testExt = "1.3.0"
 composeHotReload = "1.0.0-rc02"
-composeMultiplatform = "1.9.1"
-junit = "4.13.2"
+composeMultiplatform = "1.9.2"
+junit = "6.0.0"
 kotlin = "2.2.21"
 kotlinx-coroutines = "1.10.2"
 spring-boot = "4.0.0-RC1"
@@ -23,6 +23,7 @@ r2dbc-postgresql = "1.0.4.RELEASE"
 reactor = "3.7.12"
 reactor-kotlin-extensions = "1.2.4"
 nimbus = "10.5"
+mockito = "6.1.0"
 
 [libraries]
 # --- Kotlin + Core ---
@@ -61,6 +62,12 @@ reactor-test = { module = "io.projectreactor:reactor-test", version.ref = "react
 reactor-kotlin-extensions = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions", version.ref = "reactor-kotlin-extensions" }
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 springdoc-openapi-webflux-ui = { module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "springdoc" }
+
+# --- Mockito ---
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito"}
+
+# --- Junit ---
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
