@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: "melay"
+  rsocket:
+    server:
+      transport: tcp
+      port: 7000
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.r2dbc.R2dbcAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration

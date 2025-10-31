@@ -3,35 +3,44 @@ package eu.dezeekees.melay.server.controller
 import eu.dezeekees.melay.common.Routes
 import eu.dezeekees.melay.server.dto.request.LoginRequest
 import eu.dezeekees.melay.server.dto.response.TokenResponse
+import eu.dezeekees.melay.server.model.User
+import eu.dezeekees.melay.server.repository.UserRepository
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.mockito.kotlin.whenever
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
+import reactor.core.publisher.Mono
 
-@WebFluxTest(controllers = [AuthController::class])
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 class AuthControllerTest(
     @Autowired val webTestClient: WebTestClient
 ) {
-//    @MockitoBean
-//    lateinit var userRepository: UserRepository
+    @MockitoBean
+    lateinit var userRepository: UserRepository
 
-//    @MockitoBean
-//    lateinit var passwordEncoder: PasswordEncoder
+    @MockitoBean
+    lateinit var passwordEncoder: PasswordEncoder
 
-//    @BeforeEach
-//    fun setUp() {
-//        val password = passwordEncoder.encode("testpassword") ?: return
-//
-//        val user = User(
-//            id = "1",
-//            username = "testuser",
-//            displayName = "testuser",
-//            passwordHash = password,
-//        )
-//
-//        whenever(userRepository.findByUsername("testuser")).thenReturn(Mono.just(user))
-//        whenever(userRepository.findByUsername("unknown")).thenReturn(Mono.empty())
-//    }
+    @BeforeEach
+    fun setUp() {
+        val password = passwordEncoder.encode("testpassword") ?: return
+
+        val user = User(
+            id = "1",
+            username = "testuser",
+            displayName = "testuser",
+            passwordHash = password,
+        )
+
+        whenever(userRepository.findByUsername("testuser")).thenReturn(Mono.just(user))
+        whenever(userRepository.findByUsername("unknown")).thenReturn(Mono.empty())
+    }
 
     @Test
     fun `successful login with username and password`() {
