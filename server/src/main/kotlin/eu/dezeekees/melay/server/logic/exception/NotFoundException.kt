@@ -1,3 +1,3 @@
-package eu.dezeekees.melay.server.exception
+package eu.dezeekees.melay.server.presentation.exception
 
 class NotFoundException(message: String): RuntimeException(message)

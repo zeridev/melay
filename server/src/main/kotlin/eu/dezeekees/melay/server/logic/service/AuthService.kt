@@ -3,8 +3,7 @@ package eu.dezeekees.melay.server.service
 import eu.dezeekees.melay.server.dto.request.LoginRequest
 import eu.dezeekees.melay.server.dto.response.TokenResponse
 import eu.dezeekees.melay.server.exception.BadRequestException
-import eu.dezeekees.melay.server.model.User
-import eu.dezeekees.melay.server.repository.UserRepository
+import eu.dezeekees.melay.server.data.repository.UserRepository
 import eu.dezeekees.melay.server.security.JwtUtil
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service

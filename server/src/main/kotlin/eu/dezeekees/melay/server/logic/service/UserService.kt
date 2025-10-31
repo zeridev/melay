@@ -4,8 +4,8 @@ import eu.dezeekees.melay.server.dto.request.CreateUserRequest
 import eu.dezeekees.melay.server.exception.BadRequestException
 import eu.dezeekees.melay.server.exception.NotFoundException
 import eu.dezeekees.melay.server.mapper.CreateUserMapper
-import eu.dezeekees.melay.server.model.User
-import eu.dezeekees.melay.server.repository.UserRepository
+import eu.dezeekees.melay.server.data.model.User
+import eu.dezeekees.melay.server.data.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono

@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.dto.request
+package eu.dezeekees.melay.server.presentation.dto.request
 
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
