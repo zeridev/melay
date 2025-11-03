@@ -36,7 +36,7 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler
     fun handleGenericException(e: Exception): Mono<ResponseEntity<Map<String, String>>> {
-        val body = mapOf("errors " to "Internal Server Error")
+        val body = mapOf("errors" to "Internal Server Error")
         logger.error(e.message, e)
         return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body))
     }

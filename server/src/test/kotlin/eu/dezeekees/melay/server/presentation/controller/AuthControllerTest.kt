@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.controller
+package eu.dezeekees.melay.server.presentation.controller
 
 import eu.dezeekees.melay.common.Routes
 import eu.dezeekees.melay.server.TestApplication
@@ -19,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.bean.override.mockito.MockitoBean
 import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
-import java.util.*
+import java.util.UUID
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
@@ -27,9 +27,9 @@ import java.util.*
 )
 @ActiveProfiles("test")
 @AutoConfigureWebTestClient
-class AuthControllerTest(
-    @Autowired val webTestClient: WebTestClient
-) {
+class AuthControllerTest {
+    @Autowired
+    private lateinit var webTestClient: WebTestClient
     @MockitoBean
     lateinit var userRepository: UserRepository
     var passwordEncoder: PasswordEncoder = BCryptPasswordEncoder()
@@ -46,7 +46,7 @@ class AuthControllerTest(
         ).toUser()
 
         whenever(userRepository.findByUsername("testuser")).thenReturn(Mono.just(user))
-        whenever(userRepository.findByUsername("unknown")).thenReturn(Mono.empty())
+        whenever(userRepository.findByUsername("nonexistentuser")).thenReturn(Mono.empty())
     }
 
     @Test
@@ -66,6 +66,54 @@ class AuthControllerTest(
             .responseBody!!
 
         assert(tokenResponse.token.isNotEmpty())
+    }
+
+    @Test
+    fun `login fails when user does not exist`() {
+        val loginRequest = LoginRequest(
+            username = "nonexistentuser",
+            password = "anyPassword"
+        )
+
+        webTestClient.post()
+            .uri(Routes.Api.Auth.LOGIN)
+            .bodyValue(loginRequest)
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody()
+            .jsonPath("$.errors").exists()
+    }
+
+    @Test
+    fun `login fails when password is incorrect`() {
+        val loginRequest = LoginRequest(
+            username = "testuser",
+            password = "wrongpassword"
+        )
+
+        webTestClient.post()
+            .uri(Routes.Api.Auth.LOGIN)
+            .bodyValue(loginRequest)
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody()
+            .jsonPath("$.errors").exists()
+    }
+
+    @Test
+    fun `login fails when request body is invalid`() {
+        val invalidRequest = mapOf(
+            "username" to "", // empty username should trigger validation
+            "password" to ""  // empty password
+        )
+
+        webTestClient.post()
+            .uri(Routes.Api.Auth.LOGIN)
+            .bodyValue(invalidRequest)
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody()
+            .jsonPath("$.errors").exists() // Will contain validation errors
     }
 
 }

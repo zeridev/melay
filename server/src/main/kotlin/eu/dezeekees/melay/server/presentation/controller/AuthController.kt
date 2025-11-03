@@ -4,6 +4,7 @@ import eu.dezeekees.melay.common.Routes
 import eu.dezeekees.melay.server.logic.dto.request.LoginRequest
 import eu.dezeekees.melay.server.logic.dto.response.TokenResponse
 import eu.dezeekees.melay.server.logic.service.AuthService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -14,5 +15,5 @@ class AuthController(
     private val authService: AuthService
 ) {
     @PostMapping(Routes.Api.Auth.LOGIN)
-    fun login(@RequestBody request: LoginRequest): Mono<TokenResponse> = authService.login(request)
+    fun login(@Valid @RequestBody request: LoginRequest): Mono<TokenResponse> = authService.login(request)
 }

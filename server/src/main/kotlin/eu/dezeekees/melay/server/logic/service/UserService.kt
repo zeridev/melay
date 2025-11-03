@@ -21,18 +21,20 @@ class UserService(
         return Mono.justOrEmpty(passwordEncoder.encode(request.password))
             .switchIfEmpty(Mono.error(BadRequestException("Password encoding failed")))
             .flatMap { encoded ->
-                val user = request.toUser()
-                user.passwordHash = encoded
+                val user = request.toUser().apply {
+                    passwordHash = encoded
+                }
+
                 Mono.defer {
                     userRepository.findByUsername(user.username)
-                        .flatMap<User> {
-                            Mono.error(BadRequestException("User ${user.username} already exists"))
+                        .flatMap {
+                            Mono.error<User>(BadRequestException("User ${user.username} already exists"))
                         }
                         .switchIfEmpty (
                             userRepository.save(user)
                         )
-                }.map(User::toResponse)
-            }
+                }
+            }.map(User::toResponse)
     }
 
     fun getById(id: String): Mono<UserResponse> {

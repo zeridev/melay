@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.run.BootRun
+
 plugins {
 	kotlin("jvm")
 	kotlin("plugin.spring")
@@ -48,6 +50,10 @@ kotlin {
 	compilerOptions {
 		freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
 	}
+}
+
+tasks.withType<BootRun> {
+    mainClass.set("eu.dezeekees.melay.server.MelayApplicationKt")
 }
 
 tasks.withType<Test> {

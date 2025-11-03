@@ -18,7 +18,6 @@ import reactor.core.publisher.Mono
 class UserController(
     private val userService: UserService
 ) {
-
     @PostMapping
     fun create(@Valid @RequestBody request: CreateUserRequest) = userService.create(request)
         .then(Mono.just(ResponseEntity.ok()))
