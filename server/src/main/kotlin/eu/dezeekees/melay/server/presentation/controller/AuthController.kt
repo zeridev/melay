@@ -1,9 +1,9 @@
-package eu.dezeekees.melay.server.controller
+package eu.dezeekees.melay.server.presentation.controller
 
 import eu.dezeekees.melay.common.Routes
-import eu.dezeekees.melay.server.dto.request.LoginRequest
-import eu.dezeekees.melay.server.dto.response.TokenResponse
-import eu.dezeekees.melay.server.service.AuthService
+import eu.dezeekees.melay.server.logic.dto.request.LoginRequest
+import eu.dezeekees.melay.server.logic.dto.response.TokenResponse
+import eu.dezeekees.melay.server.logic.service.AuthService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController

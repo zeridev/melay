@@ -1,10 +1,8 @@
-package eu.dezeekees.melay.server.presentation.dto.request
+package eu.dezeekees.melay.server.logic.dto.request
 
-import eu.dezeekees.melay.server.logic.command.LoginCommand
+import eu.dezeekees.melay.common.command.LoginCommand
 
 data class LoginRequest(
-    val username: String,
-    val password: String
-)
-
-fun LoginRequest.toCommand(): LoginCommand = LoginCommand(username, password)
+    override val username: String,
+    override val password: String
+): LoginCommand

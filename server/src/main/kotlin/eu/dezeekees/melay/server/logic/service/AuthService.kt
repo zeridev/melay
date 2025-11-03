@@ -1,10 +1,10 @@
-package eu.dezeekees.melay.server.service
+package eu.dezeekees.melay.server.logic.service
 
-import eu.dezeekees.melay.server.dto.request.LoginRequest
-import eu.dezeekees.melay.server.dto.response.TokenResponse
-import eu.dezeekees.melay.server.exception.BadRequestException
-import eu.dezeekees.melay.server.data.repository.UserRepository
-import eu.dezeekees.melay.server.security.JwtUtil
+import eu.dezeekees.melay.server.logic.dto.request.LoginRequest
+import eu.dezeekees.melay.server.logic.dto.response.TokenResponse
+import eu.dezeekees.melay.server.logic.repository.UserRepository
+import eu.dezeekees.melay.server.logic.exception.BadRequestException
+import eu.dezeekees.melay.server.logic.util.JwtUtil
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -19,9 +19,9 @@ class AuthService(
             Mono.error(BadRequestException("user does not exist or password is incorrect"))
         )
         .flatMap { user ->
-            if(user.id == null) {
+            if (user.id == null) {
                 Mono.error(BadRequestException("invalid user"))
-            } else if(!passwordEncoder.matches(request.password, user.passwordHash)) {
+            } else if (!passwordEncoder.matches(request.password, user.passwordHash)) {
                 Mono.error(BadRequestException("user does not exist or password is incorrect"))
             } else {
                 val token = JwtUtil.generateToken(user.id)

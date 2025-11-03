@@ -1,7 +1,7 @@
-package eu.dezeekees.melay.server.federation.client
+package eu.dezeekees.melay.server.presentation.federation.client
 
 import eu.dezeekees.melay.common.Routes
-import eu.dezeekees.melay.server.federation.model.FederationMessage
+import eu.dezeekees.melay.server.presentation.federation.model.FederationMessage
 import org.springframework.messaging.rsocket.RSocketRequester
 import org.springframework.messaging.rsocket.retrieveFlux
 import reactor.core.publisher.Flux

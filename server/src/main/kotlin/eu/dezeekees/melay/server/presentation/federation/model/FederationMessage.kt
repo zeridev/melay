@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.federation.model
+package eu.dezeekees.melay.server.presentation.federation.model
 
 data class FederationMessage(
     val type: String,

@@ -11,6 +11,8 @@ java {
 	}
 }
 
+val mockitoAgent = configurations.create("mockitoAgent")
+
 dependencies {
     implementation(project(":common"))
 
@@ -38,6 +40,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.reactor)
     testImplementation(libs.mockito.kotlin)
     testRuntimeOnly(libs.junit.platform.launcher)
+
+    mockitoAgent("org.mockito:mockito-core") { isTransitive = false }
 }
 
 kotlin {
@@ -48,5 +52,6 @@ kotlin {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+    jvmArgs("-javaagent:${mockitoAgent.asPath}")
 }
 

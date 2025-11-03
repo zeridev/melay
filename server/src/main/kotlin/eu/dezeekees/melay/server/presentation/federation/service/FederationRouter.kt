@@ -1,11 +1,10 @@
-package eu.dezeekees.melay.server.federation.service
+package eu.dezeekees.melay.server.presentation.federation.service
 
-import eu.dezeekees.melay.server.federation.client.FederationClient
-import eu.dezeekees.melay.server.federation.config.FederationProperties
-import eu.dezeekees.melay.server.federation.model.FederationMessage
+import eu.dezeekees.melay.server.presentation.federation.client.FederationClient
+import eu.dezeekees.melay.server.presentation.federation.config.FederationProperties
+import eu.dezeekees.melay.server.presentation.federation.model.FederationMessage
 import org.springframework.messaging.rsocket.RSocketRequester
 import org.springframework.stereotype.Service
-import reactor.kotlin.core.publisher.doOnError
 import reactor.kotlin.core.publisher.toMono
 
 @Service

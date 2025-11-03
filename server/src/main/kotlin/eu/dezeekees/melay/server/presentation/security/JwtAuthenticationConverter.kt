@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.security
+package eu.dezeekees.melay.server.presentation.security
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication

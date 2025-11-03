@@ -1,9 +1,7 @@
-package eu.dezeekees.melay.server.presentation.dto.response
+package eu.dezeekees.melay.server.logic.dto.response
 
-import eu.dezeekees.melay.server.logic.command.TokenResult
+import eu.dezeekees.melay.common.result.TokenResult
 
 data class TokenResponse(
-    val token: String,
-)
-
-fun TokenResult.toResponse(): TokenResponse = TokenResponse(token)
+    override val token: String,
+): TokenResult

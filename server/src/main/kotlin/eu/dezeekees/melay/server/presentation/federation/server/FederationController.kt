@@ -1,7 +1,7 @@
-package eu.dezeekees.melay.server.federation.server
+package eu.dezeekees.melay.server.presentation.federation.server
 
 import eu.dezeekees.melay.common.Routes
-import eu.dezeekees.melay.server.federation.model.FederationMessage
+import eu.dezeekees.melay.server.presentation.federation.model.FederationMessage
 import org.springframework.stereotype.Controller
 import reactor.core.publisher.Sinks
 import org.springframework.messaging.handler.annotation.MessageMapping

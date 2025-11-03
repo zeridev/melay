@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.federation.config
+package eu.dezeekees.melay.server.presentation.federation.config
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration

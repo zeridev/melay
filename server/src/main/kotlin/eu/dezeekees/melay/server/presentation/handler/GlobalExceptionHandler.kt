@@ -1,7 +1,7 @@
-package eu.dezeekees.melay.server.handler
+package eu.dezeekees.melay.server.presentation.handler
 
-import eu.dezeekees.melay.server.exception.BadRequestException
-import eu.dezeekees.melay.server.exception.NotFoundException
+import eu.dezeekees.melay.server.logic.exception.BadRequestException
+import eu.dezeekees.melay.server.logic.exception.NotFoundException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

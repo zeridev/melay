@@ -1,6 +1,6 @@
-package eu.dezeekees.melay.server.federation.init
+package eu.dezeekees.melay.server.presentation.federation.init
 
-import eu.dezeekees.melay.server.federation.service.FederationRouter
+import eu.dezeekees.melay.server.presentation.federation.service.FederationRouter
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component

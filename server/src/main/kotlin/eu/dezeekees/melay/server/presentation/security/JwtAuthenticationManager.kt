@@ -1,10 +1,9 @@
-package eu.dezeekees.melay.server.security
+package eu.dezeekees.melay.server.presentation.security
 
-import eu.dezeekees.melay.server.security.JwtUtil
+import eu.dezeekees.melay.server.logic.util.JwtUtil
 import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
-import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 
 class JwtAuthenticationManager: ReactiveAuthenticationManager {

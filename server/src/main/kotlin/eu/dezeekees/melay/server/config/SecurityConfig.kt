@@ -1,8 +1,8 @@
 package eu.dezeekees.melay.server.config
 
 import eu.dezeekees.melay.common.Routes
-import eu.dezeekees.melay.server.security.JwtAuthenticationConverter
-import eu.dezeekees.melay.server.security.JwtAuthenticationManager
+import eu.dezeekees.melay.server.presentation.security.JwtAuthenticationConverter
+import eu.dezeekees.melay.server.presentation.security.JwtAuthenticationManager
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod

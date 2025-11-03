@@ -1,11 +1,13 @@
-package eu.dezeekees.melay.server.service
+package eu.dezeekees.melay.server.logic.service
 
-import eu.dezeekees.melay.server.dto.request.CreateUserRequest
-import eu.dezeekees.melay.server.exception.BadRequestException
-import eu.dezeekees.melay.server.exception.NotFoundException
-import eu.dezeekees.melay.server.mapper.CreateUserMapper
-import eu.dezeekees.melay.server.data.model.User
-import eu.dezeekees.melay.server.data.repository.UserRepository
+import eu.dezeekees.melay.server.logic.dto.request.CreateUserRequest
+import eu.dezeekees.melay.server.logic.dto.response.UserResponse
+import eu.dezeekees.melay.server.logic.exception.BadRequestException
+import eu.dezeekees.melay.server.logic.exception.NotFoundException
+import eu.dezeekees.melay.server.logic.mapper.toResponse
+import eu.dezeekees.melay.server.logic.mapper.toUser
+import eu.dezeekees.melay.server.logic.model.User
+import eu.dezeekees.melay.server.logic.repository.UserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
@@ -15,11 +17,11 @@ class UserService(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder
 ) {
-    fun create(request: CreateUserRequest): Mono<User> {
+    fun create(request: CreateUserRequest): Mono<UserResponse> {
         return Mono.justOrEmpty(passwordEncoder.encode(request.password))
             .switchIfEmpty(Mono.error(BadRequestException("Password encoding failed")))
             .flatMap { encoded ->
-                val user = CreateUserMapper.fromRequest(request)
+                val user = request.toUser()
                 user.passwordHash = encoded
                 Mono.defer {
                     userRepository.findByUsername(user.username)
@@ -29,12 +31,13 @@ class UserService(
                         .switchIfEmpty (
                             userRepository.save(user)
                         )
-                }
+                }.map(User::toResponse)
             }
     }
 
-    fun getByUUID(uuid: String): Mono<User> {
-        return userRepository.findById(uuid)
-            .switchIfEmpty(Mono.error(NotFoundException("User $uuid not found")))
+    fun getById(id: String): Mono<UserResponse> {
+        return userRepository.findById(id)
+            .map(User::toResponse)
+            .switchIfEmpty(Mono.error(NotFoundException("User $id not found")))
     }
 }
