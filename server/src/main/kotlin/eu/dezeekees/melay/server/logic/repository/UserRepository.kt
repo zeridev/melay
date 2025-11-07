@@ -1,11 +1,10 @@
 package eu.dezeekees.melay.server.logic.repository
 
 import eu.dezeekees.melay.server.logic.model.User
-import reactor.core.publisher.Mono
-import java.util.UUID
+import java.util.*
 
 interface UserRepository {
-    fun findById(id: UUID): Mono<User>
-    fun findByUsername(username: String): Mono<User>
-    fun save(user: User): Mono<User>
+    suspend fun findById(id: UUID): User?
+    suspend fun findByUsername(username: String): User?
+    suspend fun save(user: User): User
 }

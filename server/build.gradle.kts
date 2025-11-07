@@ -1,63 +1,62 @@
-import org.springframework.boot.gradle.tasks.run.BootRun
+import io.ktor.plugin.OpenApiPreview
 
 plugins {
-	kotlin("jvm")
-	kotlin("plugin.spring")
-	id("org.springframework.boot")
-	id("io.spring.dependency-management")
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.ktor)
+    alias(libs.plugins.kotlin.plugin.serialization)
 }
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(24)
-	}
+application {
+    mainClass = "io.ktor.server.netty.EngineMain"
 }
 
-val mockitoAgent = configurations.create("mockitoAgent")
+ktor {
+    @OptIn(OpenApiPreview::class)
+    openApi {
+        title = "Melay Api"
+        version = "0.0.1"
+    }
+}
 
 dependencies {
     implementation(project(":common"))
 
-    implementation(libs.springdoc.openapi.webflux.ui)
-    implementation(libs.spring.boot.starter.data.r2dbc)
-    implementation(libs.spring.boot.starter.webflux)
-    implementation(libs.spring.boot.starter.rsocket)
-    implementation(libs.jackson.module.kotlin)
-    implementation(libs.reactor.kotlin.extensions)
-    implementation(libs.kotlin.reflect)
-    implementation(libs.kotlinx.coroutines.reactor)
-    implementation(libs.spring.boot.starter.security)
-    implementation(libs.nimbus.jose.jwt)
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.server.host.common)
+    implementation(libs.ktor.server.status.pages)
+    implementation(libs.ktor.server.request.validation)
+    implementation(libs.ktor.server.auth)
+    implementation(libs.ktor.server.auth.jwt)
+    implementation(libs.ktor.server.swagger)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.logback.classic)
 
-    developmentOnly(libs.spring.boot.devtools)
+    implementation(libs.koin.ktor)
+    implementation(libs.koin.logger.slf4j)
 
-    runtimeOnly(libs.r2dbc.postgresql)
+    implementation(libs.argon2.jvm)
+
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.kotlin.datetime)
+    implementation(libs.exposed.dao)
     implementation(libs.flyway.core)
     implementation(libs.flyway.database.postgresql)
     implementation(libs.postgresql)
 
-    testImplementation(libs.spring.boot.starter.test)
-    testImplementation(libs.reactor.test)
-    testImplementation(libs.kotlin.testJunit)
-    testImplementation(libs.kotlinx.coroutines.reactor)
     testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.kotlin.test.junit)
     testRuntimeOnly(libs.junit.platform.launcher)
-
-    mockitoAgent("org.mockito:mockito-core") { isTransitive = false }
 }
 
 kotlin {
-	compilerOptions {
-		freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
-	}
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
+    }
+    jvmToolchain(24)
 }
 
-tasks.withType<BootRun> {
-    mainClass.set("eu.dezeekees.melay.server.MelayApplicationKt")
-}
-
-tasks.withType<Test> {
-	useJUnitPlatform()
-    jvmArgs("-javaagent:${mockitoAgent.asPath}")
-}
 

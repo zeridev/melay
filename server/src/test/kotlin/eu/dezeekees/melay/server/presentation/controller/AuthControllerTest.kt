@@ -2,11 +2,11 @@ package eu.dezeekees.melay.server.presentation.controller
 
 import eu.dezeekees.melay.common.Routes
 import eu.dezeekees.melay.server.TestApplication
-import eu.dezeekees.melay.server.data.UserMapper
+import eu.dezeekees.melay.server.data.mapper.UserMapper
 import eu.dezeekees.melay.server.data.entity.UserEntity
 import eu.dezeekees.melay.server.logic.repository.UserRepository
-import eu.dezeekees.melay.server.presentation.dto.auth.LoginRequest
-import eu.dezeekees.melay.server.presentation.dto.auth.TokenResponse
+import eu.dezeekees.melay.server.api.payload.auth.LoginRequest
+import eu.dezeekees.melay.server.api.payload.auth.TokenResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.whenever

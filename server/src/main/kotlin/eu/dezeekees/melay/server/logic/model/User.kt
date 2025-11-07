@@ -1,17 +1,14 @@
 package eu.dezeekees.melay.server.logic.model
 
-import org.springframework.data.relational.core.mapping.Column
-import org.springframework.data.relational.core.mapping.Table
-import java.time.LocalDateTime
-import java.util.UUID
-
+import kotlinx.datetime.Instant
+import java.util.*
 
 data class User(
     val id: UUID? = null,
     val username: String,
     var displayName: String,
     var passwordHash: String,
-    var profilePicture: String? = null,
-    var profileDescription: String? = null,
-    val createdAt: LocalDateTime? = null,
+    var profilePicture: String = "",
+    var profileDescription: String = "",
+    val createdAt: Instant? = null,
 )

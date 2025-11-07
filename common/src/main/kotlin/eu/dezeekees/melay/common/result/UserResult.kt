@@ -4,10 +4,10 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 interface UserResult {
-    val id: UUID?
+    val id: String?
     val username: String
     val displayName: String
     var profilePicture: String?
     var profileDescription: String?
-    val createdAt: LocalDateTime?
+    val createdAt: String?
 }

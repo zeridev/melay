@@ -4,7 +4,7 @@ import eu.dezeekees.melay.common.Routes
 import eu.dezeekees.melay.server.TestApplication
 import eu.dezeekees.melay.server.logic.model.User
 import eu.dezeekees.melay.server.logic.repository.UserRepository
-import eu.dezeekees.melay.server.presentation.dto.user.CreateUserRequest
+import eu.dezeekees.melay.server.api.payload.user.CreateUserRequest
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
