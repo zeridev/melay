@@ -1,8 +1,10 @@
 package eu.dezeekees.melay.server.presentation.controller
 
 import eu.dezeekees.melay.common.Routes
-import eu.dezeekees.melay.server.logic.dto.request.CreateUserRequest
+import eu.dezeekees.melay.server.presentation.dto.user.CreateUserRequest
 import eu.dezeekees.melay.server.logic.service.UserService
+import eu.dezeekees.melay.server.presentation.dto.user.UserResponse
+import eu.dezeekees.melay.server.presentation.mapper.UserMapper
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,9 +21,12 @@ class UserController(
     private val userService: UserService
 ) {
     @PostMapping
-    fun create(@Valid @RequestBody request: CreateUserRequest) = userService.create(request)
+    fun create(@Valid @RequestBody request: CreateUserRequest) = userService.create(request.username, request.password)
         .then(Mono.just(ResponseEntity.ok()))
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable id: String) = userService.getById(id)
+    fun getById(@PathVariable id: String): Mono<UserResponse> =
+        userService.getById(id)
+            .map(UserMapper::toResponse)
+
 }

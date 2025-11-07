@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.logic.dto.response
+package eu.dezeekees.melay.server.presentation.dto.user
 
 import eu.dezeekees.melay.common.result.UserResult
 import java.time.LocalDateTime

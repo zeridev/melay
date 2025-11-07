@@ -2,9 +2,9 @@ package eu.dezeekees.melay.server.presentation.controller
 
 import eu.dezeekees.melay.common.Routes
 import eu.dezeekees.melay.server.TestApplication
-import eu.dezeekees.melay.server.logic.dto.request.CreateUserRequest
-import eu.dezeekees.melay.server.logic.mapper.toUser
+import eu.dezeekees.melay.server.logic.model.User
 import eu.dezeekees.melay.server.logic.repository.UserRepository
+import eu.dezeekees.melay.server.presentation.dto.user.CreateUserRequest
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
@@ -39,7 +39,11 @@ class UserControllerTest {
     @Test
     fun `successfully create new user`() {
         val encodedPassword = passwordEncoder.encode("testpassword")?: ""
-        val user = validRequest.toUser().apply { passwordHash = encodedPassword }
+        val user = User(
+            username = validRequest.username,
+            displayName = validRequest.username,
+            passwordHash = encodedPassword
+        )
 
         whenever(userRepository.save(any())).thenReturn(Mono.just(user))
         whenever(userRepository.findByUsername(any())).thenReturn(Mono.empty())
@@ -56,7 +60,11 @@ class UserControllerTest {
     @Test
     fun `fail when username already exists`() {
         val encodedPassword = passwordEncoder.encode(validRequest.password)?: ""
-        val existingUser = validRequest.toUser().apply { passwordHash = encodedPassword }
+        val existingUser = User(
+            username = validRequest.username,
+            displayName = validRequest.username,
+            passwordHash = encodedPassword
+        )
 
         whenever(userRepository.findByUsername(any())).thenReturn(Mono.just(existingUser))
         whenever(userRepository.save(any())).thenReturn(Mono.just(existingUser))

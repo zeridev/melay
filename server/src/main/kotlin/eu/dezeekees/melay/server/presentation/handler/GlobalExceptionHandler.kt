@@ -2,6 +2,7 @@ package eu.dezeekees.melay.server.presentation.handler
 
 import eu.dezeekees.melay.server.logic.exception.BadRequestException
 import eu.dezeekees.melay.server.logic.exception.NotFoundException
+import eu.dezeekees.melay.server.logic.exception.UnauthorizedException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -24,6 +25,12 @@ class GlobalExceptionHandler {
     fun handleBadRequestException(e: BadRequestException): Mono<ResponseEntity<Map<String, String>>> {
         val body = mapOf("errors" to e.message.orEmpty())
         return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body))
+    }
+
+    @ExceptionHandler
+    fun handleUnauthorizedException(e: UnauthorizedException): Mono<ResponseEntity<Map<String, String>>> {
+        val body = mapOf("errors" to e.message.orEmpty())
+        return Mono.just(ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body))
     }
 
     @ExceptionHandler(WebExchangeBindException::class)

@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.logic.dto.request
+package eu.dezeekees.melay.server.presentation.dto.auth
 
 import eu.dezeekees.melay.common.command.LoginCommand
 import jakarta.validation.constraints.NotBlank

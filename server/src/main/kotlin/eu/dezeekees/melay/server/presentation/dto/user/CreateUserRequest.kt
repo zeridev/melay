@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.logic.dto.request
+package eu.dezeekees.melay.server.presentation.dto.user
 
 import eu.dezeekees.melay.common.command.CreateUserCommand
 import jakarta.validation.constraints.NotBlank

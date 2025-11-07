@@ -8,9 +8,9 @@ import reactor.core.publisher.Mono
 
 class JwtAuthenticationConverter : ServerAuthenticationConverter {
     override fun convert(exchange: ServerWebExchange): Mono<Authentication> {
-        val authHeader = exchange.request.headers.getFirst("Authorization") ?: return Mono.empty()
-        if (!authHeader.startsWith("Bearer ")) return Mono.empty()
-        val token = authHeader.substring(7)
-        return Mono.just(UsernamePasswordAuthenticationToken(token, token))
+        return Mono.justOrEmpty(exchange.request.headers.getFirst("Authorization"))
+            .filter { it.startsWith("Bearer ") }
+            .map { it.substring(7) }
+            .map { UsernamePasswordAuthenticationToken(it, it) }
     }
 }

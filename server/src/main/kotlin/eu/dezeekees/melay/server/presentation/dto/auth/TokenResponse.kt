@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.logic.dto.response
+package eu.dezeekees.melay.server.presentation.dto.auth
 
 import eu.dezeekees.melay.common.result.TokenResult
 
