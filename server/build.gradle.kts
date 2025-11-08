@@ -49,6 +49,8 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.ktor.client.content.negotiation)
+    testImplementation(libs.koin.test)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
