@@ -1,6 +1,6 @@
 package eu.dezeekees.melay.server.api.config
 
-import eu.dezeekees.melay.server.logic.JwtUtil
+import eu.dezeekees.melay.server.logic.util.JwtUtil
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
@@ -15,7 +15,7 @@ fun Application.configAuth() {
 
     install(Authentication) {
         jwt("auth-jwt") {
-            realm = JwtUtil.realm
+            realm = JwtUtil.REALM
             verifier(JwtUtil.getVerifier(secret))
             validate { credential ->
                 val id = credential.payload.getClaim("id").asString()
