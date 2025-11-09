@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+    alias(libs.plugins.kotlin.plugin.serialization)
 }
 
 kotlin {
@@ -25,6 +26,8 @@ kotlin {
 			dependencies {
 				implementation(compose.preview)
 				implementation(libs.androidx.activity.compose)
+                implementation(libs.koin.android)
+                implementation(libs.koin.androidx.compose)
 			}
 		}
         val commonMain by getting {
@@ -39,6 +42,14 @@ kotlin {
 				implementation(compose.components.uiToolingPreview)
 				implementation(libs.androidx.lifecycle.viewmodelCompose)
 				implementation(libs.androidx.lifecycle.runtimeCompose)
+                implementation(libs.androidx.lifecycle)
+                implementation(libs.androidx.navigation.compose)
+                implementation(libs.material3.adaptive)
+
+                api(libs.koin.core)
+                implementation(libs.koin.compose)
+                implementation(libs.koin.compose.viewmodel)
+                implementation(libs.koin.compose)
 			}
 		}
         val commonTest by getting {
@@ -94,7 +105,7 @@ compose.desktop {
         mainClass = "eu.dezeekees.melay.app.MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            targetFormats(TargetFormat.Msi, TargetFormat.Deb)
             packageName = "eu.dezeekees.melay.app"
             packageVersion = "1.0.0"
         }
