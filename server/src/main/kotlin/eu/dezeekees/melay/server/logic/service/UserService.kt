@@ -10,20 +10,6 @@ import java.util.*
 class UserService(
     private val userRepository: UserRepository,
 ) {
-
-    suspend fun create(username: String, password: String): User {
-        val existing = userRepository.findByUsername(username)
-        if(existing != null) throw BadRequestException("User with username: $username already exists")
-
-        val user = User(
-            username = username,
-            displayName = username,
-            passwordHash = PasswordUtil.hash(password)
-        )
-
-        return userRepository.save(user)
-    }
-
     suspend fun getById(id: String): User {
         val uuid = try {
             UUID.fromString(id)

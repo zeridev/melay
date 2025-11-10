@@ -28,6 +28,7 @@ kotlin {
 				implementation(libs.androidx.activity.compose)
                 implementation(libs.koin.android)
                 implementation(libs.koin.androidx.compose)
+                implementation(libs.ktor.client.okhttp)
 			}
 		}
         val commonMain by getting {
@@ -45,6 +46,13 @@ kotlin {
                 implementation(libs.androidx.lifecycle)
                 implementation(libs.androidx.navigation.compose)
                 implementation(libs.material3.adaptive)
+                implementation(libs.material.icons.extended)
+
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.auth)
+                implementation(libs.ktor.serialization.kotlinx.json)
 
                 api(libs.koin.core)
                 implementation(libs.koin.compose)
@@ -63,6 +71,8 @@ kotlin {
 			dependencies {
 				implementation(compose.desktop.currentOs)
 				implementation(libs.kotlinx.coroutinesSwing)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.logback.classic)
 			}
 		}
     }

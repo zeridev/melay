@@ -1,6 +1,6 @@
 package eu.dezeekees.melay.common.command
 
-interface CreateUserCommand {
+interface RegisterUserCommand {
     val username: String
     val password: String
 }

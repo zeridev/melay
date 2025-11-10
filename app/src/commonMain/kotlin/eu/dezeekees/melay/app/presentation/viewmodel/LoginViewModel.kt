@@ -1,12 +1,18 @@
 package eu.dezeekees.melay.app.presentation.viewmodel
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import eu.dezeekees.melay.app.logic.AuthService
+import eu.dezeekees.melay.app.logic.util.onError
+import eu.dezeekees.melay.app.logic.util.onSuccess
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel(
+    private val authService: AuthService,
+): ViewModel() {
     data class UiState(
         val domain: String = "",
         val username: String = "",
@@ -25,4 +31,20 @@ class LoginViewModel: ViewModel() {
 
     fun onPasswordChanged(newPassword: String) =
         _uiState.update { state -> state.copy(password = newPassword) }
+
+    fun login() {
+        viewModelScope.launch {
+            _uiState.update { state -> state.copy(isLoading = true) }
+            authService.login(
+                username = _uiState.value.username,
+                password = _uiState.value.password,
+                domain = _uiState.value.domain
+            ).onError { error ->
+                _uiState.update { state -> state.copy(isLoading = false) }
+            }
+            .onSuccess { response ->
+                _uiState.update { state -> state.copy(isLoading = false) }
+            }
+        }
+    }
 }
