@@ -29,6 +29,7 @@ kotlin {
                 implementation(libs.koin.android)
                 implementation(libs.koin.androidx.compose)
                 implementation(libs.ktor.client.okhttp)
+                implementation(libs.slf4j.android)
 			}
 		}
         val commonMain by getting {
@@ -45,6 +46,8 @@ kotlin {
 				implementation(libs.androidx.lifecycle.runtimeCompose)
                 implementation(libs.androidx.lifecycle)
                 implementation(libs.androidx.navigation.compose)
+                implementation(libs.androidx.datastore)
+                implementation(libs.androidx.datastore.prefrences)
                 implementation(libs.material3.adaptive)
                 implementation(libs.material.icons.extended)
 
