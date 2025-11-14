@@ -121,8 +121,10 @@ private fun MobileLoginScreen(
             domainText = uiState.domain,
             onDomainChange = onDomainChanged,
             usernameText = uiState.username,
+            usernameErrorText = uiState.usernameError,
             onUsernameChange = onUsernameChanged,
             passwordText = uiState.password,
+            passwordErrorText = uiState.passwordError,
             onPasswordChange = onPasswordChanged,
             onLoginClick = onLoginClick,
             loginButtonEnabled = !uiState.isLoading
@@ -162,8 +164,10 @@ private fun DesktopLoginScreen(
                 domainText = uiState.domain,
                 onDomainChange = onDomainChanged,
                 usernameText = uiState.username,
+                usernameErrorText = uiState.usernameError,
                 onUsernameChange = onUsernameChanged,
                 passwordText = uiState.password,
+                passwordErrorText = uiState.passwordError,
                 onPasswordChange = onPasswordChanged,
                 onLoginClick = onLoginClick,
                 loginButtonEnabled = !uiState.isLoading

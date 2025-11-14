@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ErrorResponse(
-    override val message: String,
+    override val reasons: List<String>,
 ): ErrorResult

@@ -38,8 +38,10 @@ fun LoginForm(
     domainText: String,
     onDomainChange: (String) -> Unit,
     usernameText: String,
+    usernameErrorText: String,
     onUsernameChange: (String) -> Unit,
     passwordText: String,
+    passwordErrorText: String,
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
     loginButtonEnabled: Boolean,
@@ -66,7 +68,7 @@ fun LoginForm(
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(0.dp),
             ) {
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
@@ -75,6 +77,7 @@ fun LoginForm(
                     label = { Text(text = "Domain") },
                     placeholder = { Text(text = "melay.example.com") },
                     singleLine = true,
+                    supportingText = { Text(text = "") },
                 )
 
                 OutlinedTextField(
@@ -83,6 +86,10 @@ fun LoginForm(
                     onValueChange = onUsernameChange,
                     label = { Text(text = "Username") },
                     placeholder = { Text(text = "Enter your username") },
+                    supportingText = { Text(
+                        text = usernameErrorText,
+                        color = MaterialTheme.colorScheme.error
+                    ) },
                     singleLine = true,
                 )
 
@@ -92,6 +99,10 @@ fun LoginForm(
                     onValueChange = onPasswordChange,
                     label = { Text(text = "Password") },
                     placeholder = { Text(text = "Enter your password") },
+                    supportingText = { Text(
+                        text = passwordErrorText,
+                        color = MaterialTheme.colorScheme.error
+                    )},
                     singleLine = true,
                     visualTransformation = if(hidePassword) PasswordVisualTransformation() else VisualTransformation.None,
                     trailingIcon = {

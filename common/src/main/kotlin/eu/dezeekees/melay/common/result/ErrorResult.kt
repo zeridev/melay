@@ -1,5 +1,5 @@
 package eu.dezeekees.melay.common.result
 
 interface ErrorResult {
-    val message: String
+    val reasons: List<String>
 }
