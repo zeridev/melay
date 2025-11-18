@@ -117,6 +117,13 @@ compose.desktop {
     application {
         mainClass = "eu.dezeekees.melay.app.MainKt"
 
+        buildTypes.release.proguard {
+            configurationFiles.from(file("./proguard-desktop.pro"))
+            isEnabled.set(true)
+            optimize.set(false)
+            obfuscate.set(true)
+        }
+
         nativeDistributions {
             targetFormats(TargetFormat.Msi, TargetFormat.Deb)
             packageName = "eu.dezeekees.melay.app"
@@ -124,3 +131,8 @@ compose.desktop {
         }
     }
 }
+
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
