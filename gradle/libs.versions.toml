@@ -27,6 +27,7 @@ postgres = "42.7.8"
 argon2-jvm = "2.12"
 material-icons-extended = "1.7.3"
 slf4j-android = "1.7.36"
+proguard = "7.8.1"
 
 [libraries]
 # --- Kotlin + Core ---

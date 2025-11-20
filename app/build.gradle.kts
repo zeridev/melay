@@ -119,14 +119,14 @@ compose.desktop {
 
         buildTypes.release.proguard {
             configurationFiles.from(file("./proguard-desktop.pro"))
-            isEnabled.set(true)
+            isEnabled.set(false)
             optimize.set(false)
             obfuscate.set(true)
         }
 
         nativeDistributions {
             targetFormats(TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "eu.dezeekees.melay.app"
+            packageName = "melay"
             packageVersion = "1.0.0"
         }
     }
@@ -135,4 +135,3 @@ compose.desktop {
 tasks.withType<Jar> {
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
-
