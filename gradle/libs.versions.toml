@@ -27,7 +27,16 @@ postgres = "42.7.8"
 argon2-jvm = "2.12"
 material-icons-extended = "1.7.3"
 slf4j-android = "1.7.36"
+ktlint = "14.0.1"
 structurizr = "5.0.3"
+
+# --- proguard fixes ---
+proguard = "7.7.0"
+jetbrains-annotations = "26.0.1"
+json = "20231013"
+log4j = "2.24.2"
+semver = "0.10.2"
+gson = "2.11.0"
 
 [libraries]
 # --- Kotlin + Core ---
@@ -101,6 +110,16 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 
 # --- Junit ---
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+
+# --- proguard fixes ---
+proguard-base = { module = "com.guardsquare:proguard-base", version.ref = "proguard" }
+proguard-gradle = { module = "com.guardsquare:proguard-gradle", version.ref = "proguard" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
+json-json = { module = "org.json:json", version.ref = "json" }
+log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
+log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
+semver = { module = "com.github.zafarkhaja:java-semver", version.ref = "semver" }
+google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 # --- structurizr ---
 structurizr-client = { module = "com.structurizr:structurizr-client", version.ref = "structurizr" }

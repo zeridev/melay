@@ -37,15 +37,15 @@
       packages = {
         inherit jdk idea-launcher;
 
-        melay-app = gradle2nix.builders.${system}.buildGradlePackage {
-          pname = "melay-app";
+        melay-app-jvm = gradle2nix.builders.${system}.buildGradlePackage {
+          pname = "melay-app-jvm";
           version = "1.0.0";
           lockFile = ./gradle.lock;
           src = ./.;
           gradleInstallFlags = [ ":app:packageReleaseUberJarForCurrentOS" ];
 
           postInstall = ''
-            mkdir -p $out/{bin,/lib/melay/app}
+            mkdir -p $out/melay/app
 
             case "${system}" in
               x86_64-linux)
@@ -60,7 +60,7 @@
                 ;;
             esac
 
-            cp app/build/compose/jars/$archJar $out/lib/melay/app/$archJar
+            cp app/build/compose/jars/$archJar $out/melay/app/$archJar
           '';
         };
       };
