@@ -15,7 +15,7 @@ test_melay:
   stage: test
   script:
     - nix develop .#build --command bash -c "
-        gradle test
+        gradle test --no-daemon
       "
   artifacts:
     when: always
