@@ -12,7 +12,7 @@ variables:
   NIX_REMOTE: "https://cache.nixos.org"
 
 test_melay:
-  extends: .nix-base
+  extends: .nix
   stage: test
   script:
     - nix develop --command bash -c "
@@ -26,7 +26,7 @@ test_melay:
         - server/build/test-results/test/*.xml
 
 build_melay_jvm:
-  extends: .nix-base
+  extends: .nix
   stage: build
   script:
     - nix --experimental-features 'nix-command flakes' build .#melay-app-jvm
