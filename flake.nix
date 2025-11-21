@@ -112,5 +112,44 @@
           export ORG_GRADLE_PROJECT_gradleUserHome=$GRADLE_HOME
         '';
       };
+
+    devShells.build = pkgs.mkShell {
+        packages = with pkgs; [
+          gcc
+          gradle_9
+          kotlin
+          jdk
+          ncurses
+          patchelf
+          zlib
+          libGL
+          xorg.libX11
+          androidSdk
+        ];
+
+        shellHook = ''
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${
+            pkgs.lib.makeLibraryPath [
+              pkgs.libGL
+              pkgs.xorg.libX11
+            ]
+          }
+
+          # Java
+          export JAVA_HOME=${jdk}/lib/openjdk
+          export PATH=$JAVA_HOME/bin:$PATH
+
+          # Gradle
+          export GRADLE_HOME=${pkgs.gradle_9}/lib/gradle
+          export PATH=$GRADLE_HOME/bin:$PATH
+
+          # Android
+          export ANDROID_HOME=${androidSdk}/share/android-sdk
+          export PATH=$ANDROID_HOME/bin:$PATH
+
+          # Kotlin
+          export PATH=${pkgs.kotlin}/bin:$PATH
+        '';
+      };
     });
 }
