@@ -9,7 +9,6 @@ stages:
 
 variables:
   NIXPKGS_ALLOW_UNFREE: "1"
-  NIX_REMOTE: "https://cache.nixos.org"
 
 test_melay:
   extends: .nix
