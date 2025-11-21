@@ -14,7 +14,7 @@ test_melay:
   extends: .nix
   stage: test
   script:
-    - nix develop --command bash -c "
+    - nix develop .#build --command bash -c "
         gradle test
       "
   artifacts:
