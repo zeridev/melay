@@ -34,6 +34,7 @@ fun LoginScreen(
         onDomainChanged = viewModel::onDomainChanged,
         onUsernameChanged = viewModel::onUsernameChanged,
         onPasswordChanged = viewModel::onPasswordChanged,
+        onLoginClick =  viewModel::login
     )
 }
 
@@ -43,6 +44,7 @@ fun LoginScreenContent(
     onDomainChanged: (String) -> Unit,
     onUsernameChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
+    onLoginClick: () -> Unit,
 ) {
     val screenType = ScreenType.fromWindowSizeClass(currentWindowAdaptiveInfo().windowSizeClass)
 
@@ -71,6 +73,7 @@ fun LoginScreenContent(
                         onDomainChanged,
                         onUsernameChanged,
                         onPasswordChanged,
+                        onLoginClick
                     )
 
                     else -> DesktopLoginScreen(
@@ -78,6 +81,7 @@ fun LoginScreenContent(
                         onDomainChanged,
                         onUsernameChanged,
                         onPasswordChanged,
+                        onLoginClick
                     )
                 }
             }
@@ -91,6 +95,7 @@ private fun MobileLoginScreen(
     onDomainChanged: (String) -> Unit,
     onUsernameChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
+    onLoginClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -116,10 +121,13 @@ private fun MobileLoginScreen(
             domainText = uiState.domain,
             onDomainChange = onDomainChanged,
             usernameText = uiState.username,
+            usernameErrorText = uiState.usernameError,
             onUsernameChange = onUsernameChanged,
             passwordText = uiState.password,
+            passwordErrorText = uiState.passwordError,
             onPasswordChange = onPasswordChanged,
-            onLoginClick = {}
+            onLoginClick = onLoginClick,
+            loginButtonEnabled = !uiState.isLoading
         )
     }
 }
@@ -130,6 +138,7 @@ private fun DesktopLoginScreen(
     onDomainChanged: (String) -> Unit,
     onUsernameChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
+    onLoginClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -155,10 +164,13 @@ private fun DesktopLoginScreen(
                 domainText = uiState.domain,
                 onDomainChange = onDomainChanged,
                 usernameText = uiState.username,
+                usernameErrorText = uiState.usernameError,
                 onUsernameChange = onUsernameChanged,
                 passwordText = uiState.password,
+                passwordErrorText = uiState.passwordError,
                 onPasswordChange = onPasswordChanged,
-                onLoginClick = {}
+                onLoginClick = onLoginClick,
+                loginButtonEnabled = !uiState.isLoading
             )
 
             LoginLogo(
@@ -183,5 +195,6 @@ fun LoginScreenPreview() {
         onDomainChanged = {},
         onUsernameChanged = {},
         onPasswordChanged = {},
+        onLoginClick = {},
     )
 }

@@ -28,6 +28,8 @@ kotlin {
 				implementation(libs.androidx.activity.compose)
                 implementation(libs.koin.android)
                 implementation(libs.koin.androidx.compose)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.slf4j.android)
 			}
 		}
         val commonMain by getting {
@@ -44,7 +46,16 @@ kotlin {
 				implementation(libs.androidx.lifecycle.runtimeCompose)
                 implementation(libs.androidx.lifecycle)
                 implementation(libs.androidx.navigation.compose)
+                implementation(libs.androidx.datastore)
+                implementation(libs.androidx.datastore.prefrences)
                 implementation(libs.material3.adaptive)
+                implementation(libs.material.icons.extended)
+
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.client.logging)
+                implementation(libs.ktor.client.auth)
+                implementation(libs.ktor.serialization.kotlinx.json)
 
                 api(libs.koin.core)
                 implementation(libs.koin.compose)
@@ -63,6 +74,17 @@ kotlin {
 			dependencies {
 				implementation(compose.desktop.currentOs)
 				implementation(libs.kotlinx.coroutinesSwing)
+                implementation(libs.ktor.client.okhttp)
+                implementation(libs.logback.classic)
+
+                compileOnly(libs.proguard.base)
+                compileOnly(libs.proguard.gradle)
+                compileOnly(libs.jetbrains.annotations)
+                compileOnly(libs.json.json)
+                compileOnly(libs.log4j.core)
+                compileOnly(libs.log4j.api)
+                compileOnly(libs.semver)
+                compileOnly(libs.google.gson)
 			}
 		}
     }
@@ -104,10 +126,21 @@ compose.desktop {
     application {
         mainClass = "eu.dezeekees.melay.app.MainKt"
 
+        buildTypes.release.proguard {
+            configurationFiles.from(file("./proguard-desktop.pro"))
+            isEnabled.set(true)
+            optimize.set(false)
+            obfuscate.set(true)
+        }
+
         nativeDistributions {
             targetFormats(TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "eu.dezeekees.melay.app"
+            packageName = "melay"
             packageVersion = "1.0.0"
         }
     }
+}
+
+tasks.withType<Jar> {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }

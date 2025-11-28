@@ -12,20 +12,26 @@ import io.ktor.server.response.*
 fun Application.configStatusPage() {
     install(StatusPages) {
         exception<BadRequestException> { call, cause ->
-            call.respond(HttpStatusCode.BadRequest, ErrorResponse(cause.message ?: "Unknown error occurred"))
+            call.respond(HttpStatusCode.BadRequest, ErrorResponse(listOf(
+                cause.message ?: "Unknown error occurred"
+            )))
         }
 
         exception<RequestValidationException> { call, cause ->
-            call.respond(HttpStatusCode.BadRequest, ErrorResponse(cause.message ?: "Unknown error occurred"))
+            call.respond(HttpStatusCode.BadRequest, ErrorResponse(cause.reasons))
         }
 
         exception<NotFoundException> { call, cause ->
-            call.respond(HttpStatusCode.NotFound, ErrorResponse(cause.message ?: "Unknown error occurred"))
+            call.respond(HttpStatusCode.NotFound, ErrorResponse(
+                listOf(cause.message ?: "Unknown error occurred")
+            ))
         }
 
         exception<Throwable> { call, cause ->
             cause.printStackTrace()
-            call.respond(HttpStatusCode.InternalServerError, ErrorResponse(cause.message ?: "Unknown error occurred"))
+            call.respond(HttpStatusCode.InternalServerError, ErrorResponse(
+                listOf(cause.message ?: "Unknown error occurred")
+            ))
         }
     }
 }
