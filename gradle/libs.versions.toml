@@ -37,6 +37,7 @@ json = "20231013"
 log4j = "2.24.2"
 semver = "0.10.2"
 gson = "2.11.0"
+structurizr = "5.0.3"
 
 [libraries]
 # --- Kotlin + Core ---
@@ -120,6 +121,10 @@ log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "lo
 log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
 semver = { module = "com.github.zafarkhaja:java-semver", version.ref = "semver" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+
+# --- structurizr ---
+structurizr-client = { module = "com.structurizr:structurizr-client", version.ref = "structurizr" }
+structurizr-component = { module = "com.structurizr:structurizr-component", version.ref = "structurizr" }
 
 # --- structurizr ---
 structurizr-client = { module = "com.structurizr:structurizr-client", version.ref = "structurizr" }
