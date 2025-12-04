@@ -127,6 +127,10 @@ google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 structurizr-client = { module = "com.structurizr:structurizr-client", version.ref = "structurizr" }
 structurizr-component = { module = "com.structurizr:structurizr-component", version.ref = "structurizr" }
 
+# --- structurizr ---
+structurizr-client = { module = "com.structurizr:structurizr-client", version.ref = "structurizr" }
+structurizr-component = { module = "com.structurizr:structurizr-component", version.ref = "structurizr" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
