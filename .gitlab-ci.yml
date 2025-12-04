@@ -1,37 +1,17 @@
-.nix:
-  image: nixos/nix
-  before_script:
-    - echo "experimental-features = nix-command flakes" >>/etc/nix/nix.conf
+image: cimg/android:2025.11.1
 
 stages:
   - test
   - build
 
-variables:
-  NIXPKGS_ALLOW_UNFREE: "1"
-
 test_melay:
-  extends: .nix
   stage: test
   script:
-    - nix develop .#build --command bash -c "
-        gradle test --no-daemon
-      "
+    # Run Gradle tests for all modules
+    - gradle clean test --no-daemon
   artifacts:
     when: always
     reports:
-      junit: 
+      junit:
         - app/build/test-results/testReleaseUnitTest/*.xml
         - server/build/test-results/test/*.xml
-
-build_melay_jvm:
-  extends: .nix
-  stage: build
-  script:
-    - nix --experimental-features 'nix-command flakes' build .#melay-app-jvm
-  artifacts:
-    paths:
-      - result/lib/melay/app/*.jar
-    expire_in: 1 week
-  only:
-    - main
