@@ -1,0 +1,404 @@
+{
+  "configuration" : { },
+  "description" : "Architecture model for a Kotlin Multiplatform client interacting with a RSocket/REST API backend.",
+  "documentation" : { },
+  "id" : 0,
+  "model" : {
+    "people" : [ {
+      "description" : "Sends and receives messages on the platform.",
+      "id" : "1",
+      "name" : "End user",
+      "relationships" : [ {
+        "description" : "Sends and receives messages using",
+        "destinationId" : "2",
+        "id" : "3",
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Uses",
+        "destinationId" : "4",
+        "id" : "8",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "Kotlin UI/OS Networking"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "containers" : [ {
+        "description" : "A client app in Kotlin Multiplatform",
+        "documentation" : { },
+        "id" : "4",
+        "name" : "Client",
+        "relationships" : [ {
+          "description" : "Makes API calls and socket connections to",
+          "destinationId" : "5",
+          "id" : "9",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "REST/RSocket"
+        }, {
+          "description" : "Makes authentication requests to",
+          "destinationId" : "12",
+          "id" : "30",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "REST/JSON"
+        }, {
+          "description" : "Makes user related requests to",
+          "destinationId" : "13",
+          "id" : "31",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "REST/JSON"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Kotlin Multiplatform (Android, Jvm/Desktop)"
+      }, {
+        "components" : [ {
+          "documentation" : { },
+          "id" : "12",
+          "name" : "Auth Routes",
+          "properties" : {
+            "component.type" : "eu.dezeekees.melay.server.api.routes.AuthRoutesKt"
+          },
+          "relationships" : [ {
+            "destinationId" : "14",
+            "id" : "27",
+            "sourceId" : "12",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Ktor Routes/Controller"
+        }, {
+          "documentation" : { },
+          "id" : "13",
+          "name" : "User Routes",
+          "properties" : {
+            "component.type" : "eu.dezeekees.melay.server.api.routes.UserRoutesKt"
+          },
+          "relationships" : [ {
+            "destinationId" : "15",
+            "id" : "29",
+            "sourceId" : "13",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Ktor Routes/Controller"
+        }, {
+          "documentation" : { },
+          "id" : "14",
+          "name" : "Auth Service",
+          "properties" : {
+            "component.type" : "eu.dezeekees.melay.server.logic.service.AuthService"
+          },
+          "relationships" : [ {
+            "destinationId" : "19",
+            "id" : "20",
+            "sourceId" : "14",
+            "tags" : "Relationship"
+          }, {
+            "destinationId" : "18",
+            "id" : "21",
+            "sourceId" : "14",
+            "tags" : "Relationship"
+          }, {
+            "destinationId" : "17",
+            "id" : "22",
+            "sourceId" : "14",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses repository to read and write data",
+            "destinationId" : "19",
+            "id" : "26",
+            "sourceId" : "14",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Business Logic Service"
+        }, {
+          "documentation" : { },
+          "id" : "15",
+          "name" : "User Service",
+          "properties" : {
+            "component.type" : "eu.dezeekees.melay.server.logic.service.UserService"
+          },
+          "relationships" : [ {
+            "destinationId" : "19",
+            "id" : "23",
+            "sourceId" : "15",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses repository to write data",
+            "destinationId" : "19",
+            "id" : "28",
+            "sourceId" : "15",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Business Logic Service"
+        }, {
+          "documentation" : { },
+          "id" : "16",
+          "name" : "User Dao",
+          "properties" : {
+            "component.type" : "eu.dezeekees.melay.server.data.dao.UserDao"
+          },
+          "relationships" : [ {
+            "description" : "Reads and writes user data from",
+            "destinationId" : "6",
+            "id" : "24",
+            "sourceId" : "16",
+            "tags" : "Relationship",
+            "technology" : "JDBC/SQL"
+          }, {
+            "description" : "Implements",
+            "destinationId" : "19",
+            "id" : "25",
+            "sourceId" : "16",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Data Access Object"
+        }, {
+          "documentation" : { },
+          "id" : "17",
+          "name" : "Jwt Util",
+          "properties" : {
+            "component.type" : "eu.dezeekees.melay.server.logic.util.JwtUtil"
+          },
+          "tags" : "Element,Component",
+          "technology" : "Utility Function"
+        }, {
+          "documentation" : { },
+          "id" : "18",
+          "name" : "Password Util",
+          "properties" : {
+            "component.type" : "eu.dezeekees.melay.server.logic.util.PasswordUtil"
+          },
+          "tags" : "Element,Component",
+          "technology" : "Utility Function"
+        }, {
+          "documentation" : { },
+          "id" : "19",
+          "name" : "User Repository",
+          "properties" : {
+            "component.type" : "eu.dezeekees.melay.server.logic.repository.UserRepository"
+          },
+          "tags" : "Element,Component",
+          "technology" : "Repository Interface"
+        } ],
+        "description" : "Provides the messaging service via RSocket and a REST API.",
+        "documentation" : { },
+        "id" : "5",
+        "name" : "Backend",
+        "relationships" : [ {
+          "description" : "Reads and writes from",
+          "destinationId" : "6",
+          "id" : "10",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "JDBC/SQL"
+        }, {
+          "description" : "Writes to and deletes from",
+          "destinationId" : "7",
+          "id" : "11",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "HTTP/Internal API"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Ktor/Rsocket Api"
+      }, {
+        "description" : "Stores user information, communities, and messages.",
+        "documentation" : { },
+        "id" : "6",
+        "name" : "Postgres Database",
+        "tags" : "Element,Container",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Stores attached files, profile pictures, and other static files.",
+        "documentation" : { },
+        "id" : "7",
+        "name" : "Static Store",
+        "tags" : "Element,Container",
+        "technology" : "Local Disk Directory"
+      } ],
+      "description" : "The complete application providing real-time and persistent messaging capabilities.",
+      "documentation" : { },
+      "id" : "2",
+      "name" : "Messaging Platform",
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "Melay",
+  "views" : {
+    "componentViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 200,
+        "implementation" : "Dagre",
+        "nodeSeparation" : 600,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "containerId" : "5",
+      "description" : "The decomposition of the Backend API container.",
+      "elements" : [ {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "14",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "15",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "16",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "18",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "19",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "Backend Components",
+      "name" : "Component View: Messaging Platform - Backend",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "20"
+      }, {
+        "id" : "21"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "23"
+      }, {
+        "id" : "24"
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "26"
+      }, {
+        "id" : "27"
+      }, {
+        "id" : "28"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "31"
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : { },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 200,
+        "implementation" : "Dagre",
+        "nodeSeparation" : 600,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "The decomposition of the Messaging Platform into its high-level building blocks.",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Containers",
+      "name" : "Container View: Messaging Platform",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "10"
+      }, {
+        "id" : "11"
+      }, {
+        "id" : "8"
+      }, {
+        "id" : "9"
+      } ],
+      "softwareSystemId" : "2"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 200,
+        "implementation" : "Dagre",
+        "nodeSeparation" : 600,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "Context",
+      "name" : "System Context View: Messaging Platform",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "3"
+      } ],
+      "softwareSystemId" : "2"
+    } ]
+  }
+}
