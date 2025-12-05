@@ -76,15 +76,6 @@ kotlin {
 				implementation(libs.kotlinx.coroutinesSwing)
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.logback.classic)
-
-                compileOnly(libs.proguard.base)
-                compileOnly(libs.proguard.gradle)
-                compileOnly(libs.jetbrains.annotations)
-                compileOnly(libs.json.json)
-                compileOnly(libs.log4j.core)
-                compileOnly(libs.log4j.api)
-                compileOnly(libs.semver)
-                compileOnly(libs.google.gson)
 			}
 		}
     }

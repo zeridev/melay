@@ -14,7 +14,7 @@ object Routes {
             const val NAME = "${Api.NAME}/user"
         }
     }
-    object Ws {
+    object Socket {
         object Federation {
             const val NAME = "federation"
 
@@ -25,6 +25,10 @@ object Routes {
             object Stream {
                 const val NAME = "${Federation.NAME}.stream"
             }
+        }
+
+        object MelayClient {
+            const val CONNECTION_ROUTE = "melay-client"
         }
     }
 }

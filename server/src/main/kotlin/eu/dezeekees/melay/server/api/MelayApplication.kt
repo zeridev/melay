@@ -4,6 +4,7 @@ import eu.dezeekees.melay.server.api.config.DatabaseConfig
 import eu.dezeekees.melay.server.api.config.configAuth
 import eu.dezeekees.melay.server.api.config.configContentNegotiation
 import eu.dezeekees.melay.server.api.config.configKoin
+import eu.dezeekees.melay.server.api.config.configRSocket
 import eu.dezeekees.melay.server.api.config.configRoutes
 import eu.dezeekees.melay.server.api.config.configStatusPage
 import eu.dezeekees.melay.server.api.config.configValidation
@@ -22,5 +23,6 @@ fun Application.module() {
     configAuth()
     configStatusPage()
     configValidation()
+    configRSocket()
     configRoutes()
 }

@@ -9,10 +9,6 @@ import io.ktor.server.routing.*
 
 fun Application.configRoutes() {
     routing {
-        swaggerUI(
-            path = "/swagger-ui",
-            swaggerFile = "openapi/generated.json"
-        )
         userRoutes()
         authRoutes()
     }
