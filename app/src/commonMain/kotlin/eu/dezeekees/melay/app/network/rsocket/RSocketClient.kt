@@ -1,0 +1,23 @@
+package eu.dezeekees.melay.app.network.rsocket
+
+import eu.dezeekees.melay.app.logic.`interface`.IRSocketClient
+import io.ktor.client.HttpClient
+import io.rsocket.kotlin.RSocket
+import io.rsocket.kotlin.ktor.client.rSocket
+
+class RSocketClient(private val httpClient: HttpClient): IRSocketClient {
+    private var rSocket: RSocket? = null
+
+    override val isConnected: Boolean
+        get() = rSocket != null
+
+    override suspend fun connect(url: String) {
+        if (rSocket == null) {
+            rSocket = httpClient.rSocket(url)
+        }
+    }
+
+    override fun getRSocket(): RSocket {
+        return rSocket ?: error("RSocket not connected")
+    }
+}

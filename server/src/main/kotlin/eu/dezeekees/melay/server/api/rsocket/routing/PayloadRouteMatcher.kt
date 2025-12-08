@@ -5,17 +5,51 @@ import io.rsocket.kotlin.metadata.RoutingMetadata
 import io.rsocket.kotlin.metadata.read
 import io.rsocket.kotlin.payload.Payload
 
-class PayloadRouteMatcher(val payload: Payload) {
-    @OptIn(ExperimentalMetadataApi::class)
-    private val incomingRouteString: String? =
-        payload.metadata?.read(RoutingMetadata)?.tags?.firstOrNull()
+class PayloadRouteMatcher(private val routeString: String?) {
 
-    fun match(routePattern: String, block: (Map<String, String>) -> Unit) {
-        val incomingRoute = incomingRouteString?.let { parseRoute(it) } ?: return
+    fun match(routePattern: String): ParsedRoute? {
+        val incomingRoute = routeString?.let { parseRoute(it) } ?: return null
         val patternRoute = parseRoute(routePattern)
 
-        if(incomingRoute.name == patternRoute.name) {
-            block(incomingRoute.params)
+        return if (incomingRoute.name == patternRoute.name) {
+            incomingRoute
+        } else {
+            null
         }
     }
+
+    fun parseRoute(route: String): ParsedRoute {
+        val paramRegex = Regex("""\{([^:{}]+):([^:{}]+)\}""")
+        val nameSegments = mutableListOf<String>()
+        val params = mutableMapOf<String, String>()
+
+        val segments = route.split(".")
+
+        for (segment in segments) {
+            if(paramRegex.matches(segment)) {
+                val bare = segment.removePrefix("{").removeSuffix("}")
+                val parts = bare.split(":")
+                val key = parts[0]
+                val value = parts.getOrNull(1)
+
+                nameSegments.add(key)
+                if(!value.isNullOrBlank()) {
+                    params[key] = value
+                }
+            } else {
+                val bare = segment.removePrefix("{").removeSuffix("}")
+                nameSegments.add(bare)
+            }
+        }
+
+        return ParsedRoute(
+            name = nameSegments.joinToString("."),
+            params = params,
+        )
+    }
+
 }
+
+@OptIn(ExperimentalMetadataApi::class)
+fun Payload.route(): PayloadRouteMatcher =
+    PayloadRouteMatcher(metadata?.read(RoutingMetadata)?.tags?.firstOrNull())

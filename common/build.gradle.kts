@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     testImplementation(kotlin("test"))
+    api(libs.kotlinx.serialization.protobuf)
+    api(libs.rsocket.core)
 }
 
 tasks.test {

@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.app.network.http
+package eu.dezeekees.melay.app.network
 
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.okhttp.OkHttp

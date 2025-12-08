@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.app.network.http
+package eu.dezeekees.melay.app.network
 
 import eu.dezeekees.melay.app.logic.error.NetworkError
 import eu.dezeekees.melay.app.logic.serializer.NetworkErrorSerializer
@@ -9,10 +9,11 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
+import io.ktor.client.plugins.websocket.WebSockets
 import io.ktor.serialization.kotlinx.json.json
+import io.rsocket.kotlin.ktor.client.RSocketSupport
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.contextual
 
 expect fun createHttpClientEngine(): HttpClientEngine
 
@@ -22,6 +23,8 @@ fun createHttpClient(): HttpClient {
             level = LogLevel.ALL
             logger = Logger.SIMPLE
         }
+        install(WebSockets)
+        install(RSocketSupport)
         install(ContentNegotiation) {
             json(
                 Json {

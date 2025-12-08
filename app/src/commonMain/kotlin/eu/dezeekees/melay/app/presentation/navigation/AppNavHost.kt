@@ -11,7 +11,7 @@ import eu.dezeekees.melay.app.presentation.ui.screen.MainScreen
 fun AppNavHost(navController: NavHostController) {
     NavigationHandler(navController)
 
-    NavHost(navController, startDestination = AppRoutes.Auth.Login) {
+    NavHost(navController, startDestination = AppRoutes.Main) {
         composable<AppRoutes.Auth.Login> { LoginScreen() }
         composable<AppRoutes.Main> { MainScreen() }
     }

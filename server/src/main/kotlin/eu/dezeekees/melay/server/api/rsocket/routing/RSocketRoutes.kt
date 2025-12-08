@@ -1,25 +1,36 @@
 package eu.dezeekees.melay.server.api.rsocket.routing
 
 import eu.dezeekees.melay.common.Routes
-import io.ktor.server.routing.Route
+import eu.dezeekees.melay.common.rsocket.ConfiguredProtoBuf
+import eu.dezeekees.melay.common.rsocket.encodeToPayload
+import io.ktor.server.routing.*
 import io.rsocket.kotlin.RSocketRequestHandler
 import io.rsocket.kotlin.ktor.server.rSocket
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.ExperimentalSerializationApi
+
+@OptIn(ExperimentalSerializationApi::class)
+val proto = ConfiguredProtoBuf
 
 @OptIn(ExperimentalSerializationApi::class)
 fun Route.rsocketRoutes() {
     rSocket(Routes.Socket.MelayClient.CONNECTION_ROUTE) {
-        val proto = ConfiguredProtoBuf
 
         RSocketRequestHandler {
-            requestStream { payload ->
-                payload.whenRoute {
-                    match("stream.{community_id}.{channel_id}.messages") { params ->
 
+            requestChannel { initial, flow ->
+                val routeMatcher = initial.route()
+
+                val messagesMatch = routeMatcher.match("stream.{community_id}.{channel_id}.messages")
+
+                when {
+                    messagesMatch != null -> {
+                        println(messagesMatch.params)
+                        return@requestChannel flowOf(proto.encodeToPayload("test"))
                     }
-                }
 
-                error("No route")
+                    else -> throw IllegalArgumentException("No route matched")
+                }
             }
         }
     }

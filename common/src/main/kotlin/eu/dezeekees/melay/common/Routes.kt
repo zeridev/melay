@@ -28,7 +28,7 @@ object Routes {
         }
 
         object MelayClient {
-            const val CONNECTION_ROUTE = "melay-client"
+            const val CONNECTION_ROUTE = "/melay-client"
         }
     }
 }
