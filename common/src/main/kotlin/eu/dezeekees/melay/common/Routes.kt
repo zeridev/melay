@@ -12,6 +12,16 @@ object Routes {
 
         object User {
             const val NAME = "${Api.NAME}/user"
+            const val COMMUNITIES = "${Api.NAME}/communities"
+        }
+
+        object Community {
+            const val NAME = "${Api.NAME}/community"
+            const val MEMBERS = "${Api.NAME}/memberships"
+        }
+
+        object Channel {
+            const val NAME = "${Api.NAME}/channel"
         }
     }
     object Socket {

@@ -19,7 +19,7 @@ class PayloadRouteMatcher(private val routeString: String?) {
     }
 
     fun parseRoute(route: String): ParsedRoute {
-        val paramRegex = Regex("""\{([^:{}]+):([^:{}]+)\}""")
+        val paramRegex = Regex("""\{([^:{}]+):([^:{}]*)\}""")
         val nameSegments = mutableListOf<String>()
         val params = mutableMapOf<String, String>()
 

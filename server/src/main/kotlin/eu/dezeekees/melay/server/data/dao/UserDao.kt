@@ -25,7 +25,7 @@ class UserDao : UserRepository {
         }
     }
 
-    override suspend fun save(user: User): User = withContext(Dispatchers.IO) {
+    override suspend fun create(user: User): User = withContext(Dispatchers.IO) {
         transaction {
             val entity = UserEntity.new {
                 username = user.username

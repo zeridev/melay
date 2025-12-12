@@ -8,9 +8,10 @@ import io.rsocket.kotlin.RSocketRequestHandler
 import io.rsocket.kotlin.ktor.server.rSocket
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.protobuf.ProtoBuf
 
 @OptIn(ExperimentalSerializationApi::class)
-val proto = ConfiguredProtoBuf
+val proto: ProtoBuf = ConfiguredProtoBuf
 
 @OptIn(ExperimentalSerializationApi::class)
 fun Route.rsocketRoutes() {

@@ -116,7 +116,7 @@ class AuthRoutesTest: TestBase(), KoinTest {
             createdAt = Clock.System.now(),
         )
 
-        whenever(mockUserRepository.save(any())).thenReturn(user)
+        whenever(mockUserRepository.create(any())).thenReturn(user)
         whenever(mockUserRepository.findByUsername(any())).thenReturn(null)
 
         val response: UserResponse = client.post(Routes.Api.Auth.REGISTER) {
@@ -138,7 +138,7 @@ class AuthRoutesTest: TestBase(), KoinTest {
             createdAt = Clock.System.now(),
         )
 
-        whenever(mockUserRepository.save(any())).thenReturn(existingUser)
+        whenever(mockUserRepository.create(any())).thenReturn(existingUser)
         whenever(mockUserRepository.findByUsername(any())).thenReturn(existingUser)
 
         val response = client.post(Routes.Api.Auth.REGISTER) {

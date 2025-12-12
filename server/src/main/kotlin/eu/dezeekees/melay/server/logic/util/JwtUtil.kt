@@ -25,7 +25,7 @@ object JwtUtil {
         val token = JWT.create()
             .withIssuer(ISSUER)
             .withAudience(AUDIENCE)
-            .withClaim("id", userId.toString())
+            .withSubject(userId.toString())
             .withExpiresAt(Date(System.currentTimeMillis() + EXPIRES_IN))
             .sign(Algorithm.HMAC256(secret))
 

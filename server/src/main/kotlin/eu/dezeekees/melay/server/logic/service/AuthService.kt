@@ -28,6 +28,6 @@ class AuthService(
             passwordHash = PasswordUtil.hash(password)
         )
 
-        return userRepository.save(user)
+        return userRepository.create(user)
     }
 }
