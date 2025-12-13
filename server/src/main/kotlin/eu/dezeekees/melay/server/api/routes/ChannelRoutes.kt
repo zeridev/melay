@@ -7,6 +7,7 @@ import eu.dezeekees.melay.server.api.payload.channel.ChannelResponse
 import eu.dezeekees.melay.server.api.payload.channel.CreateChannelRequest
 import eu.dezeekees.melay.server.api.payload.channel.UpdateChannelRequest
 import eu.dezeekees.melay.server.logic.service.ChannelService
+import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
@@ -20,25 +21,26 @@ import java.util.UUID
 fun Route.channelRoutes() {
     val channelService by inject<ChannelService>()
 
-    route(Routes.Api.Channel.NAME) {
-        post<ChannelResponse> {
-            val request = call.receive<CreateChannelRequest>()
-            val channel = channelService.create(ChannelMapper.toModel(request))
-            call.respond(ChannelMapper.toResponse(channel))
-        }
+    authenticate("auth-jwt") {
+        route(Routes.Api.Channel.NAME) {
+            post {
+                val request = call.receive<CreateChannelRequest>()
+                val channel = channelService.create(ChannelMapper.toModel(request))
+                call.respond(ChannelMapper.toResponse(channel))
+            }
 
-        patch<ChannelResponse> {
-            val request = call.receive<UpdateChannelRequest>()
-            val channel = channelService.update(ChannelMapper.toModel(request))
-            call.respond(ChannelMapper.toResponse(channel))
-        }
+            patch {
+                val request = call.receive<UpdateChannelRequest>()
+                val channel = channelService.update(ChannelMapper.toModel(request))
+                call.respond(ChannelMapper.toResponse(channel))
+            }
 
-        delete {
-            val request = call.receive<UuidRequest>()
-            val uuid = UUID.fromString(request.uuid)
-            channelService.delete(uuid)
+            delete {
+                val request = call.receive<UuidRequest>()
+                val uuid = request.uuid
+                channelService.delete(uuid)
+            }
         }
     }
-
 
 }

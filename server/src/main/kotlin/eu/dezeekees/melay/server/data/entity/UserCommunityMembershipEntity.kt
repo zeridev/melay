@@ -14,6 +14,11 @@ object UserCommunityMemberships : CompositeIdTable("user_community_membership") 
     val communityId = reference("community_id", Communities.id, onDelete = ReferenceOption.CASCADE)
     val joinedAt = datetime("joined_at").defaultExpression(CurrentDateTime)
 
+    init {
+        addIdColumn(userId)
+        addIdColumn(communityId)
+    }
+
     override val primaryKey = PrimaryKey(userId, communityId)
 }
 

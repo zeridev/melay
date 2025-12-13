@@ -13,13 +13,14 @@ object CommunityMapper {
     )
 
     fun toModel(updateCommunityRequest: UpdateCommunityRequest) = Community(
+        id = updateCommunityRequest.id,
         name = updateCommunityRequest.name,
         description = updateCommunityRequest.description,
         iconUrl = updateCommunityRequest.iconUrl,
         bannerUrl = updateCommunityRequest.bannerUrl,
     )
 
-    fun toResponse(community: Community): CommunityResponse = CommunityResponse(
+    fun toResponse(community: Community) = CommunityResponse(
         id = community.id ?: throw InternalServerErrorException("Community id is null"),
         name = community.name,
         description = community.description,
@@ -28,4 +29,6 @@ object CommunityMapper {
         createdAt = community.createdAt ?: throw InternalServerErrorException("Community createdAt is null"),
         channels = community.channels.map { ChannelMapper.toResponse(it) },
     )
+
+    fun toResponse(source: List<Community>) = source.map { toResponse(it) }
 }

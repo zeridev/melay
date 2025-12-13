@@ -2,6 +2,7 @@ package eu.dezeekees.melay.server.data.mapper
 
 import eu.dezeekees.melay.server.data.entity.CommunityEntity
 import eu.dezeekees.melay.server.logic.model.Community
+import org.jetbrains.exposed.sql.SizedIterable
 
 object CommunityMapper {
     fun toCommunity(source: CommunityEntity) = Community(
@@ -13,4 +14,6 @@ object CommunityMapper {
         createdAt = source.createdAt,
         channels = source.channels.map { ChannelMapper.toChannel(it) }
     )
+
+    fun toCommunity(source: SizedIterable<CommunityEntity>) = source.map { toCommunity(it) }
 }

@@ -14,6 +14,10 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
 class CommunityDao : CommunityRepository {
+    override suspend fun findAll(): List<Community> = withContext(Dispatchers.IO) {
+        transaction { CommunityMapper.toCommunity(CommunityEntity.all()) }
+    }
+
     override suspend fun findById(id: UUID): Community = withContext(Dispatchers.IO) {
         transaction {
             val entity = CommunityEntity.findById(id) ?: throw NotFoundException("Community with id $id not found")

@@ -8,5 +8,6 @@ data class Channel(
     val name: String,
     val type: ChannelType,
     var position: Int = 0,
+    var communityId: UUID? = null,
     val createdAt: Instant? = null,
 )

@@ -8,5 +8,6 @@ fun Application.module() {
     configAuth()
     configStatusPage()
     configValidation()
+    configRSocket()
     configRoutes()
 }

@@ -17,7 +17,7 @@ object Routes {
 
         object Community {
             const val NAME = "${Api.NAME}/community"
-            const val MEMBERS = "${Api.NAME}/memberships"
+            const val MEMBERS = "${NAME}/memberships"
         }
 
         object Channel {

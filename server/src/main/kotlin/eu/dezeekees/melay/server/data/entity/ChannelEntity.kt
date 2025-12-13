@@ -23,5 +23,6 @@ class ChannelEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     var name by Channels.name
     var type by Channels.type
     var position by Channels.position
+    var communityId by Channels.communityId
     var createdAt by Channels.createdAt
 }

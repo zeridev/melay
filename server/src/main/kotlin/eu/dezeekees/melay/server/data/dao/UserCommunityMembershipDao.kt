@@ -10,6 +10,7 @@ import eu.dezeekees.melay.server.logic.model.User
 import eu.dezeekees.melay.server.logic.repository.UserCommunityMembershipRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.jetbrains.exposed.dao.id.CompositeID
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -19,10 +20,15 @@ class UserCommunityMembershipDao : UserCommunityMembershipRepository {
 
     override suspend fun addMembership(userId: UUID, communityId: UUID) = withContext(Dispatchers.IO) {
         transaction {
-            UserCommunityMembershipEntity.new {
-                this.user = UserEntity.findById(userId) ?: throw NotFoundException("User Not Found")
-                this.community = CommunityEntity.findById(communityId) ?: throw NotFoundException("Community Not Found")
+            val userId = UserEntity.findById(userId) ?: throw NotFoundException("User Not Found")
+            val communityId = CommunityEntity.findById(communityId) ?: throw NotFoundException("Community Not Found")
+
+            val compositeId = CompositeID {
+                it[UserCommunityMemberships.userId] = userId.id
+                it[UserCommunityMemberships.communityId] = communityId.id
             }
+
+            UserCommunityMembershipEntity.new(compositeId) {}
 
             return@transaction
         }

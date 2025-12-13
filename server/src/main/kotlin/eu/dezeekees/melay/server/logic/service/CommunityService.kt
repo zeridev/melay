@@ -7,6 +7,9 @@ import java.util.UUID
 class CommunityService(
     private val communityRepository: CommunityRepository,
 ) {
+    suspend fun findAll(): List<Community> =
+        communityRepository.findAll()
+
     suspend fun findById(uuid: UUID): Community =
         communityRepository.findById(uuid)
 
