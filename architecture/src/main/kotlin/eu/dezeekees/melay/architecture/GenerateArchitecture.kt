@@ -42,7 +42,7 @@ fun main() {
 
     ComponentFinderBuilder()
         .forContainer(backend)
-        .fromClasses("server/build/libs/server-all.jar")
+        .fromClasses("server/build/libs/server.jar")
         .filteredBy(IncludeFullyQualifiedNameRegexFilter(rootPackageRegex))
 
         .withStrategy(

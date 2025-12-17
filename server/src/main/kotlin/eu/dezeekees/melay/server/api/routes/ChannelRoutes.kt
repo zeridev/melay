@@ -6,7 +6,9 @@ import eu.dezeekees.melay.server.api.payload.UuidRequest
 import eu.dezeekees.melay.server.api.payload.channel.ChannelResponse
 import eu.dezeekees.melay.server.api.payload.channel.CreateChannelRequest
 import eu.dezeekees.melay.server.api.payload.channel.UpdateChannelRequest
+import eu.dezeekees.melay.server.api.util.getUUIDFromParam
 import eu.dezeekees.melay.server.logic.service.ChannelService
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
@@ -35,10 +37,10 @@ fun Route.channelRoutes() {
                 call.respond(ChannelMapper.toResponse(channel))
             }
 
-            delete {
-                val request = call.receive<UuidRequest>()
-                val uuid = request.uuid
-                channelService.delete(uuid)
+            delete("/{channelId}") {
+                val channelId = call.parameters.getUUIDFromParam("channelId")
+                channelService.delete(channelId)
+                call.respond(HttpStatusCode.OK)
             }
         }
     }

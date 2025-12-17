@@ -22,6 +22,8 @@ import org.jetbrains.exposed.sql.kotlin.datetime.CurrentTimestamp
 import org.junit.jupiter.api.Test
 import org.koin.test.KoinTest
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.whenever
 import java.util.UUID
@@ -100,10 +102,9 @@ class CommunityRoutesTest : TestBase(), KoinTest {
 
     @Test
     fun `delete community returns ok`() = testBlock {
-        val response = client.delete(Routes.Api.Community.NAME) {
-            contentType(ContentType.Application.Json)
-            setBody(uuidRequest)
-        }
+        whenever(mockCommunityRepository.delete(any<UUID>())).thenAnswer { }
+        val route = "${Routes.Api.Community.NAME}/${uuidRequest.uuid}"
+        val response = client.delete(route)
 
         assertEquals(HttpStatusCode.OK, response.status)
     }
@@ -128,10 +129,7 @@ class CommunityRoutesTest : TestBase(), KoinTest {
     fun `remove membership returns ok`() = testBlock {
         whenever(mockUserCommunityMembershipRepository.removeMembership(any(), any())) doReturn Unit
 
-        val response = client.delete(Routes.Api.Community.MEMBERS) {
-            contentType(ContentType.Application.Json)
-            setBody(membershipRequest)
-        }
+        val response = client.delete("${Routes.Api.Community.MEMBERS}/${membershipRequest.communityId}/${membershipRequest.userId}")
 
         assertEquals(HttpStatusCode.OK, response.status)
     }
@@ -141,8 +139,6 @@ class CommunityRoutesTest : TestBase(), KoinTest {
         val response = client.get("${Routes.Api.Community.MEMBERS}/not-a-uuid")
         assertEquals(HttpStatusCode.BadRequest, response.status)
     }
-
-    // ...added tests for expected failures...
 
     @Test
     fun `create fails when name is blank`() = testBlock {

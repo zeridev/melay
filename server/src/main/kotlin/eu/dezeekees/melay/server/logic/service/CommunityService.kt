@@ -19,6 +19,8 @@ class CommunityService(
     suspend fun update(community: Community): Community =
          communityRepository.update(community)
 
-    suspend fun delete(communityId: UUID) =
+    suspend fun delete(communityId: UUID) {
+        println("Deleting community with id: $communityId")
         communityRepository.delete(communityId)
+    }
 }

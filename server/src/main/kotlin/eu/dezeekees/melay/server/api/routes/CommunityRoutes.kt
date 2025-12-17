@@ -8,9 +8,11 @@ import eu.dezeekees.melay.server.api.payload.community.CommunityResponse
 import eu.dezeekees.melay.server.api.payload.community.CreateCommunityRequest
 import eu.dezeekees.melay.server.api.payload.community.UpdateCommunityRequest
 import eu.dezeekees.melay.server.api.payload.community.UserCommunityMembershipRequest
+import eu.dezeekees.melay.server.api.util.getUUIDFromParam
 import eu.dezeekees.melay.server.logic.exception.BadRequestException
 import eu.dezeekees.melay.server.logic.service.CommunityService
 import eu.dezeekees.melay.server.logic.service.UserCommunityMembershipService
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -42,20 +44,16 @@ fun Route.communityRoutes() {
                 call.respond(CommunityMapper.toResponse(community))
             }
 
-            delete {
-                val request = call.receive<UuidRequest>()
-                val uuid = request.uuid
-                communityService.delete(uuid)
+            delete("/{communityId}") {
+                val communityId = call.parameters.getUUIDFromParam("communityId")
+                communityService.delete(communityId)
+                call.respond(HttpStatusCode.OK)
             }
         }
 
         route(Routes.Api.Community.MEMBERS) {
             get("/{communityId}") {
-                val communityIdString = call.parameters["communityId"]
-                    ?: throw BadRequestException("CommunityId parameter missing")
-                val communityId = runCatching { UUID.fromString(communityIdString) }.getOrNull()
-                    ?: throw BadRequestException("CommunityId parameter missing or invalid")
-
+                val communityId = call.parameters.getUUIDFromParam("communityId")
                 val members = userCommunityMembershipService.findUsersForCommunity(communityId)
                 members.map(UserMapper::toResponse)
             }
@@ -69,9 +67,11 @@ fun Route.communityRoutes() {
                 call.respond(CommunityMapper.toResponse(community))
             }
 
-            delete {
-                val request = call.receive<UserCommunityMembershipRequest>()
-                userCommunityMembershipService.removeMembership(request.userId, request.communityId)
+            delete("/{communityId}/{userId}") {
+                val communityId = call.parameters.getUUIDFromParam("communityId")
+                val userId = call.parameters.getUUIDFromParam("userId")
+                userCommunityMembershipService.removeMembership(userId, communityId)
+                call.respond(HttpStatusCode.OK)
             }
         }
     }
