@@ -1,7 +1,4 @@
-package eu.dezeekees.melay.common.result
-
-import java.time.LocalDateTime
-import java.util.UUID
+package eu.dezeekees.melay.common.payload.user
 
 interface UserResult {
     val id: String?

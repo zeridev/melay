@@ -3,7 +3,6 @@ package eu.dezeekees.melay.server.api.validator
 import eu.dezeekees.melay.server.api.payload.channel.CreateChannelRequest
 import io.ktor.server.plugins.requestvalidation.RequestValidationConfig
 import io.ktor.server.plugins.requestvalidation.ValidationResult
-import java.util.UUID
 
 fun RequestValidationConfig.channelValidator() {
     validate<CreateChannelRequest> { request ->

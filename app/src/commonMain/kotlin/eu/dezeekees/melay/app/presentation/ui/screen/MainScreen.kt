@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import eu.dezeekees.melay.app.presentation.viewmodel.MainScreenViewmodel
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -15,6 +17,9 @@ import org.koin.compose.viewmodel.koinViewModel
 fun MainScreen(
     viewmodel: MainScreenViewmodel = koinViewModel()
 ) {
+    val isLoading by viewmodel.isLoading.collectAsStateWithLifecycle()
+    val tokenState by viewmodel.token.collectAsStateWithLifecycle()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) { innerPadding ->
@@ -23,7 +28,7 @@ fun MainScreen(
                 .padding(innerPadding)
                 .fillMaxWidth()
         ) {
-            Text("Main Screen")
+            Text(tokenState?.token ?: "no token")
         }
     }
 }

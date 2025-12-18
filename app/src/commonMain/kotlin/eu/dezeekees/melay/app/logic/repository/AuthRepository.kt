@@ -1,9 +1,9 @@
 package eu.dezeekees.melay.app.logic.repository
 
-import eu.dezeekees.melay.app.logic.model.auth.LoginRequest
-import eu.dezeekees.melay.app.logic.model.auth.Token
 import eu.dezeekees.melay.app.logic.error.Error
 import eu.dezeekees.melay.app.logic.error.Result
+import eu.dezeekees.melay.app.logic.model.auth.LoginRequest
+import eu.dezeekees.melay.app.logic.model.auth.Token
 
 interface AuthRepository {
     suspend fun register()

@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.common.result
+package eu.dezeekees.melay.common.payload
 
 interface ErrorResult {
     val reasons: List<String>

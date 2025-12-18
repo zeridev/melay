@@ -2,7 +2,7 @@ package eu.dezeekees.melay.app.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import eu.dezeekees.melay.app.logic.AuthService
+import eu.dezeekees.melay.app.logic.service.AuthService
 import eu.dezeekees.melay.app.logic.error.NetworkError
 import eu.dezeekees.melay.app.logic.error.onError
 import eu.dezeekees.melay.app.logic.error.onSuccess

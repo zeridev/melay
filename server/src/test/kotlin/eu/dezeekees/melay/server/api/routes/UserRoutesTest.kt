@@ -9,7 +9,6 @@ import eu.dezeekees.melay.server.logic.model.User
 import eu.dezeekees.melay.server.logic.util.PasswordUtil
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.http.*
 import kotlinx.datetime.Clock
 import org.junit.Assert.assertEquals
 import org.junit.Test

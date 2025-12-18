@@ -1,6 +1,5 @@
 package eu.dezeekees.melay.server.api.validator
 
-import eu.dezeekees.melay.server.api.payload.ErrorResponse
 import eu.dezeekees.melay.server.api.payload.auth.LoginRequest
 import eu.dezeekees.melay.server.api.payload.auth.RegisterUserRequest
 import io.ktor.server.plugins.requestvalidation.RequestValidationConfig

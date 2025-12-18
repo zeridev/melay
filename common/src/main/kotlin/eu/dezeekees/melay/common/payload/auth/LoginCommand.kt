@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.common.command
+package eu.dezeekees.melay.common.payload.auth
 
 interface LoginCommand {
     val username: String

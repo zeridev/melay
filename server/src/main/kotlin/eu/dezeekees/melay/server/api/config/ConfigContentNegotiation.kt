@@ -1,6 +1,6 @@
 package eu.dezeekees.melay.server.api.config
 
-import eu.dezeekees.melay.server.logic.util.kotlinx.UUIDSerializer
+import eu.dezeekees.melay.common.kotlinx.UUIDSerializer
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install

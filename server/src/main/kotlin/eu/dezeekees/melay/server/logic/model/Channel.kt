@@ -3,6 +3,7 @@ package eu.dezeekees.melay.server.logic.model
 import kotlinx.datetime.Instant
 import java.util.UUID
 
+
 data class Channel(
     val id: UUID? = null,
     val name: String,

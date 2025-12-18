@@ -3,13 +3,10 @@ package eu.dezeekees.melay.server.api.routes
 import eu.dezeekees.melay.common.Routes
 import eu.dezeekees.melay.server.api.mapper.CommunityMapper
 import eu.dezeekees.melay.server.api.mapper.UserMapper
-import eu.dezeekees.melay.server.api.payload.UuidRequest
-import eu.dezeekees.melay.server.api.payload.community.CommunityResponse
 import eu.dezeekees.melay.server.api.payload.community.CreateCommunityRequest
 import eu.dezeekees.melay.server.api.payload.community.UpdateCommunityRequest
 import eu.dezeekees.melay.server.api.payload.community.UserCommunityMembershipRequest
 import eu.dezeekees.melay.server.api.util.getUUIDFromParam
-import eu.dezeekees.melay.server.logic.exception.BadRequestException
 import eu.dezeekees.melay.server.logic.service.CommunityService
 import eu.dezeekees.melay.server.logic.service.UserCommunityMembershipService
 import io.ktor.http.HttpStatusCode
@@ -18,7 +15,6 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
-import java.util.*
 
 fun Route.communityRoutes() {
     val communityService by inject<CommunityService>()

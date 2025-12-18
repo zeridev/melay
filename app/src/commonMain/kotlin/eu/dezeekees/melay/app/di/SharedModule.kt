@@ -1,6 +1,6 @@
 package eu.dezeekees.melay.app.di
 
-import eu.dezeekees.melay.app.logic.AuthService
+import eu.dezeekees.melay.app.logic.service.AuthService
 import eu.dezeekees.melay.app.logic.`interface`.IRSocketClient
 import eu.dezeekees.melay.app.logic.repository.AuthRepository
 import eu.dezeekees.melay.app.network.http.client.AuthClient

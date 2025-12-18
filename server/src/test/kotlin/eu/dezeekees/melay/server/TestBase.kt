@@ -10,7 +10,7 @@ import eu.dezeekees.melay.server.logic.service.CommunityService
 import eu.dezeekees.melay.server.logic.service.UserCommunityMembershipService
 import eu.dezeekees.melay.server.logic.service.UserService
 import eu.dezeekees.melay.server.logic.util.JwtUtil
-import eu.dezeekees.melay.server.logic.util.kotlinx.UUIDSerializer
+import eu.dezeekees.melay.common.kotlinx.UUIDSerializer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.bearerAuth

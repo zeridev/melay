@@ -1,6 +1,6 @@
 package eu.dezeekees.melay.app.logic.model.auth
 
-import eu.dezeekees.melay.common.command.LoginCommand
+import eu.dezeekees.melay.common.payload.auth.LoginCommand
 import kotlinx.serialization.Serializable
 
 @Serializable
