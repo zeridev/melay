@@ -31,6 +31,7 @@ ktlint = "14.0.1"
 structurizr = "5.0.3"
 rsocket = "0.20.0"
 kotlinx-serialization-protofuf = "1.9.0"
+coil = "3.3.0"
 
 [libraries]
 # --- Kotlin + Core ---
@@ -91,6 +92,10 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+
+# --- Coil ---
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
 # --- Argon2 ---
 argon2-jvm = { module = "de.mkammerer:argon2-jvm", version.ref = "argon2-jvm" }

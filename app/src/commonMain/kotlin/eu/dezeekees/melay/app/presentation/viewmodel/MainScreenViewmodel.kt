@@ -35,6 +35,13 @@ class MainScreenViewmodel(
     private val outgoing = MutableSharedFlow<Payload>()
     lateinit var stream: Flow<Payload>
 
+    data class UIState(
+        val usersRowOpen: Boolean = false,
+    )
+
+    private val _uiState = MutableStateFlow(UIState())
+    val uiState: StateFlow<UIState> = _uiState
+
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
         .onStart { initialize() }
@@ -42,7 +49,6 @@ class MainScreenViewmodel(
 
     private val _token = MutableStateFlow<Token?>(null)
     val token: StateFlow<Token?> = _token
-
 
     private fun initialize() {
         viewModelScope.launch {
@@ -55,6 +61,12 @@ class MainScreenViewmodel(
 
             _token.value = authService.getToken()
         }
+    }
+
+    fun toggleUsersRowOpen() {
+        _uiState.value = _uiState.value.copy(
+            usersRowOpen = !_uiState.value.usersRowOpen
+        )
     }
 
     init {

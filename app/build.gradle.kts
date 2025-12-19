@@ -62,6 +62,9 @@ kotlin {
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
                 implementation(libs.koin.compose)
+
+                implementation(libs.coil.compose)
+                implementation(libs.coil.network.ktor3)
 			}
 		}
         val commonTest by getting {

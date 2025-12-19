@@ -73,7 +73,6 @@ class PayloadRouteMatcherTest {
     // -----------------------------
     // match()
     // -----------------------------
-
     @Test
     fun `match returns parsed route when names match`() {
         val incoming = "stream.{channel_id:42}.messages"
