@@ -1,65 +1,46 @@
 package eu.dezeekees.melay.app.presentation.ui.screen
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.ImageLoader
-import coil3.compose.AsyncImage
 import coil3.compose.setSingletonImageLoaderFactory
 import coil3.network.ktor3.KtorNetworkFetcherFactory
-import eu.dezeekees.melay.app.presentation.ui.component.main.ChannelButton
-import eu.dezeekees.melay.app.presentation.ui.component.main.ChannelTopBar
-import eu.dezeekees.melay.app.presentation.ui.component.main.ChannelsRow
-import eu.dezeekees.melay.app.presentation.ui.component.main.CommunityBar
-import eu.dezeekees.melay.app.presentation.ui.component.main.OnlineUser
+import eu.dezeekees.melay.app.network.HttpClientProvider
+import eu.dezeekees.melay.app.presentation.ui.component.main.channels.ChannelTopBar
+import eu.dezeekees.melay.app.presentation.ui.component.main.channels.ChannelsRow
+import eu.dezeekees.melay.app.presentation.ui.component.main.channels.CreateChannelPopup
+import eu.dezeekees.melay.app.presentation.ui.component.main.chat.ChatSection
+import eu.dezeekees.melay.app.presentation.ui.component.main.chat.OnlineUser
+import eu.dezeekees.melay.app.presentation.ui.component.main.communities.CommunityBar
 import eu.dezeekees.melay.app.presentation.ui.theme.MelayTheme
 import eu.dezeekees.melay.app.presentation.viewmodel.MainScreenViewmodel
-import io.ktor.client.HttpClient
+import eu.dezeekees.melay.app.presentation.viewmodel.main.CreateChannelPopupViewModel
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MainScreen(
-    viewmodel: MainScreenViewmodel = koinViewModel()
+    viewmodel: MainScreenViewmodel = koinViewModel(),
+    createChannelPopupViewModel: CreateChannelPopupViewModel = koinViewModel(),
 ) {
     val isLoading by viewmodel.isLoading.collectAsStateWithLifecycle()
     val uiState by viewmodel.uiState.collectAsStateWithLifecycle()
-    val httpClient = koinInject<HttpClient>()
+    val httpClientProvider = koinInject<HttpClientProvider>()
 
     setSingletonImageLoaderFactory { context ->
         ImageLoader.Builder(context)
             .components {
-                add(KtorNetworkFetcherFactory(httpClient))
+                add(KtorNetworkFetcherFactory(httpClientProvider.get()))
             }
             .build()
     }
@@ -73,7 +54,10 @@ fun MainScreen(
                 .background(MelayTheme.colorScheme.surfaceDim)
                 .fillMaxSize()
         ) {
-            CommunityBar()
+            CommunityBar(
+                uiState = uiState,
+                onCommunityBarItemClick = { communityId -> viewmodel.setSelectedCommunity(communityId) },
+            )
 
             // main screen
             Row(
@@ -84,14 +68,31 @@ fun MainScreen(
             ) {
 
                 // left row (channels & logged in user)
-                ChannelsRow()
+                ChannelsRow(
+                    viewmodel.selectedCommunity,
+                    onCreateChannelClick = { createChannelPopupViewModel.open() },
+                    onLeaveCommunityClick = {},
+                    onDeleteChannelClick = { channelId -> createChannelPopupViewModel.delete(
+                        channelId,
+                        onSuccess = { viewmodel.reloadAllCommunities() }
+                    ) }
+                )
+
+                CreateChannelPopup(
+                    viewmodel.selectedCommunity,
+                    createChannelPopupViewModel,
+                    onCreateSuccess = { viewmodel.reloadAllCommunities() },
+                )
 
                 Column(
                     modifier = Modifier
                 ) {
 
                     // channel bar
-                    ChannelTopBar(viewmodel)
+                    ChannelTopBar(
+                        uiState = uiState,
+                        onMemberListToggleClick = { viewmodel.toggleUsersRowOpen() }
+                    )
 
                     // channel content
                     Row(
@@ -103,7 +104,7 @@ fun MainScreen(
                             modifier = Modifier
                                 .weight(1f)
                         ) {
-
+                            ChatSection()
                         }
 
                         // right row (community users)

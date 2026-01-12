@@ -13,7 +13,7 @@ actual object Crypto : Crypto {
     private const val BLOCK_MODE = "CBC"
     private const val PADDING = "PKCS5Padding"
     private const val TRANSFORMATION = "$ALGORITHM/$BLOCK_MODE/$PADDING"
-    private val keyFile = ConfigDir.getFile("keyfile.enc")
+    private val keyFile = AppDirs.dataFile("keyfile.enc")
     private val cipher = Cipher.getInstance(TRANSFORMATION)
     private val key: SecretKey = loadOrCreateKey()
 

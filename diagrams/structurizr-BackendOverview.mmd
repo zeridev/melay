@@ -1,0 +1,35 @@
+graph TB
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Messaging Platform - Backend - Components"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    4["<div style='font-weight: bold'>Client</div><div style='font-size: 70%; margin-top: 0px'>[Container: Kotlin Multiplatform (Android, Jvm/Desktop)]</div><div style='font-size: 80%; margin-top:10px'>A client app in Kotlin<br />Multiplatform</div>"]
+    style 4 fill:#dddddd,stroke:#9a9a9a,color:#000000
+    6["<div style='font-weight: bold'>Postgres Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL]</div><div style='font-size: 80%; margin-top:10px'>Stores user information,<br />communities, and messages.</div>"]
+    style 6 fill:#dddddd,stroke:#9a9a9a,color:#000000
+    7["<div style='font-weight: bold'>Static Store</div><div style='font-size: 70%; margin-top: 0px'>[Container: Local Disk Directory]</div><div style='font-size: 80%; margin-top:10px'>Stores attached files,<br />profile pictures, and other<br />static files.</div>"]
+    style 7 fill:#dddddd,stroke:#9a9a9a,color:#000000
+
+    subgraph 5 ["Backend"]
+      style 5 fill:#ffffff,stroke:#9a9a9a,color:#9a9a9a
+
+      12["<div style='font-weight: bold'>Identity & Auth</div><div style='font-size: 70%; margin-top: 0px'>[Component: Ktor / JWT]</div><div style='font-size: 80%; margin-top:10px'>Handles user registration,<br />login, and JWT security.</div>"]
+      style 12 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      13["<div style='font-weight: bold'>Community & Channel Service</div><div style='font-size: 70%; margin-top: 0px'>[Component: Ktor / Business Logic]</div><div style='font-size: 80%; margin-top:10px'>Manages communities,<br />channels, and memberships.</div>"]
+      style 13 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      14["<div style='font-weight: bold'>Real-time Messaging</div><div style='font-size: 70%; margin-top: 0px'>[Component: RSocket / Ktor]</div><div style='font-size: 80%; margin-top:10px'>Handles RSocket streams and<br />message delivery.</div>"]
+      style 14 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      15["<div style='font-weight: bold'>Data Access Layer</div><div style='font-size: 70%; margin-top: 0px'>[Component: Exposed / JDBC]</div><div style='font-size: 80%; margin-top:10px'>Abstracts database operations<br />using Repositories and DAOs.</div>"]
+      style 15 fill:#dddddd,stroke:#9a9a9a,color:#000000
+    end
+
+    4-. "<div>Authenticates with</div><div style='font-size: 70%'>[REST/JSON]</div>" .->12
+    4-. "<div>Manages data via</div><div style='font-size: 70%'>[REST/JSON]</div>" .->13
+    4-. "<div>Streams messages via</div><div style='font-size: 70%'>[RSocket]</div>" .->14
+    12-. "<div>Reads/Writes user data</div><div style='font-size: 70%'></div>" .->15
+    13-. "<div>Reads/Writes community data</div><div style='font-size: 70%'></div>" .->15
+    14-. "<div>Persists messages</div><div style='font-size: 70%'></div>" .->15
+    15-. "<div>Reads and writes from</div><div style='font-size: 70%'>[JDBC/SQL]</div>" .->6
+    13-. "<div>Stores profile/community<br />images</div><div style='font-size: 70%'>[Internal API]</div>" .->7
+  end

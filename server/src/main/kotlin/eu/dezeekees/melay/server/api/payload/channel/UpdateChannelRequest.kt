@@ -1,6 +1,6 @@
 package eu.dezeekees.melay.server.api.payload.channel
 
-import eu.dezeekees.melay.server.logic.model.ChannelType
+import eu.dezeekees.melay.common.payload.ChannelType
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,0 +1,13 @@
+graph TB
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Messaging Platform - System Context"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    1["<div style='font-weight: bold'>End user</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>Sends and receives messages<br />on the platform.</div>"]
+    style 1 fill:#dddddd,stroke:#9a9a9a,color:#000000
+    2["<div style='font-weight: bold'>Messaging Platform</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>The complete application<br />providing real-time and<br />persistent messaging<br />capabilities.</div>"]
+    style 2 fill:#dddddd,stroke:#9a9a9a,color:#000000
+
+    1-. "<div>Sends and receives messages<br />using</div><div style='font-size: 70%'></div>" .->2
+  end

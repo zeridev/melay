@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.app.presentation.ui.component.main
+package eu.dezeekees.melay.app.presentation.ui.component.main.chat
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

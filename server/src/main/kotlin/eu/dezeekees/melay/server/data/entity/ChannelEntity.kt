@@ -1,6 +1,6 @@
 package eu.dezeekees.melay.server.data.entity
 
-import eu.dezeekees.melay.server.logic.model.ChannelType
+import eu.dezeekees.melay.common.payload.ChannelType
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID

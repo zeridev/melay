@@ -1,6 +1,6 @@
 package eu.dezeekees.melay.app.logic.error
 
-import kotlinx.serialization.Serializable
+import io.ktor.http.HttpStatusCode
 
 enum class NetworkErrorType {
     REQUEST_TIMEOUT,
@@ -14,6 +14,18 @@ enum class NetworkErrorType {
     SERIALIZATION,
     UNKNOWN;
 }
+
+fun HttpStatusCode.toNetworkErrorType(): NetworkErrorType =
+    when (value) {
+        400 -> NetworkErrorType.BAD_REQUEST
+        401 -> NetworkErrorType.UNAUTHORIZED
+        408 -> NetworkErrorType.REQUEST_TIMEOUT
+        409 -> NetworkErrorType.CONFLICT
+        413 -> NetworkErrorType.PAYLOAD_TOO_LARGE
+        429 -> NetworkErrorType.TOO_MANY_REQUESTS
+        in 500..599 -> NetworkErrorType.SERVER_ERROR
+        else -> NetworkErrorType.UNKNOWN
+    }
 
 class NetworkError(
     override val type: NetworkErrorType = NetworkErrorType.UNKNOWN,

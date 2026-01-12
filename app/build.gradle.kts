@@ -51,6 +51,8 @@ kotlin {
                 implementation(libs.material3.adaptive)
                 implementation(libs.material.icons.extended)
 
+                implementation(libs.kotlinx.datetime)
+
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.client.logging)

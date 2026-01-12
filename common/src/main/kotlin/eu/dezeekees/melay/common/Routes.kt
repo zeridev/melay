@@ -12,6 +12,7 @@ object Routes {
 
         object User {
             const val NAME = "${Api.NAME}/user"
+            const val ME = "${Api.NAME}/@me"
             const val COMMUNITIES = "${Api.NAME}/communities"
         }
 

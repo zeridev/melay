@@ -5,7 +5,7 @@ import eu.dezeekees.melay.server.TestBase
 import eu.dezeekees.melay.server.api.payload.channel.CreateChannelRequest
 import eu.dezeekees.melay.server.api.payload.channel.UpdateChannelRequest
 import eu.dezeekees.melay.server.logic.model.Channel
-import eu.dezeekees.melay.server.logic.model.ChannelType
+import eu.dezeekees.melay.common.payload.ChannelType
 import io.ktor.client.call.body
 import io.ktor.client.request.delete
 import io.ktor.client.request.patch

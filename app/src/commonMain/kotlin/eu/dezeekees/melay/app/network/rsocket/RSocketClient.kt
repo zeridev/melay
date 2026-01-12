@@ -1,11 +1,14 @@
 package eu.dezeekees.melay.app.network.rsocket
 
 import eu.dezeekees.melay.app.logic.`interface`.IRSocketClient
+import eu.dezeekees.melay.app.network.HttpClientProvider
 import io.ktor.client.HttpClient
 import io.rsocket.kotlin.RSocket
 import io.rsocket.kotlin.ktor.client.rSocket
 
-class RSocketClient(private val httpClient: HttpClient): IRSocketClient {
+class RSocketClient(
+    private val clientProvider: HttpClientProvider
+): IRSocketClient {
     private var rSocket: RSocket? = null
 
     override val isConnected: Boolean
@@ -13,7 +16,9 @@ class RSocketClient(private val httpClient: HttpClient): IRSocketClient {
 
     override suspend fun connect(url: String) {
         if (rSocket == null) {
-            rSocket = httpClient.rSocket(url)
+            rSocket = clientProvider
+                .get()
+                .rSocket(url)
         }
     }
 

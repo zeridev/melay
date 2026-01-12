@@ -2,13 +2,9 @@ package eu.dezeekees.melay.app.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import eu.dezeekees.melay.app.logic.service.AuthService
 import eu.dezeekees.melay.app.logic.error.NetworkError
 import eu.dezeekees.melay.app.logic.error.onError
-import eu.dezeekees.melay.app.logic.error.onSuccess
-import eu.dezeekees.melay.app.presentation.navigation.AppRoutes
-import eu.dezeekees.melay.app.presentation.navigation.NavEvent
-import eu.dezeekees.melay.app.presentation.navigation.NavigationManager
+import eu.dezeekees.melay.app.logic.service.AuthService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -16,7 +12,6 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val authService: AuthService,
-    private val navigationManager: NavigationManager
 ): ViewModel() {
     data class UiState(
         val domain: String = "",
@@ -53,10 +48,6 @@ class LoginViewModel(
                     usernameError = error.getReasonForField("username"),
                     passwordError = error.getReasonForField("password")
                 ) }
-            }
-            .onSuccess {
-                _uiState.update { state -> state.copy(isLoading = false) }
-                navigationManager.navigate(NavEvent.ToRouteClearingBackstack(AppRoutes.Main))
             }
         }
     }

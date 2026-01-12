@@ -21,7 +21,6 @@ fun Route.userRoutes() {
 
     authenticate("auth-jwt") {
         route(Routes.Api.User.NAME) {
-
             /** @security bearer */
             get("/{id}") {
                 val id = call.parameters["id"] ?: throw BadRequestException("Missing id")
@@ -30,16 +29,21 @@ fun Route.userRoutes() {
             }
         }
 
-        route(Routes.Api.User.COMMUNITIES) {
-            get {
-                val authPrincipal = call.principal<JWTPrincipal>()
-                    ?: throw UnauthorizedException("Not authenticated")
-                val userId = runCatching { UUID.fromString(authPrincipal.payload.subject) }.getOrNull()
-                    ?: throw UnauthorizedException("Invalid UUID")
+        get(Routes.Api.User.ME) {
+            val authPrincipal = call.principal<JWTPrincipal>()
+                ?: throw UnauthorizedException("Missing user")
+            val user = userService.getById(authPrincipal.payload.subject)
+            call.respond(UserMapper.toResponse(user))
+        }
 
-                val communities = userCommunityMembershipService.findCommunitiesForUser(userId)
-                communities.map(CommunityMapper::toResponse)
-            }
+        get(Routes.Api.User.COMMUNITIES) {
+            val authPrincipal = call.principal<JWTPrincipal>()
+                ?: throw UnauthorizedException("Not authenticated")
+            val userId = runCatching { UUID.fromString(authPrincipal.payload.subject) }.getOrNull()
+                ?: throw UnauthorizedException("Invalid UUID")
+
+            val communities = userCommunityMembershipService.findCommunitiesForUser(userId)
+            call.respond(communities.map(CommunityMapper::toResponse))
         }
     }
 }

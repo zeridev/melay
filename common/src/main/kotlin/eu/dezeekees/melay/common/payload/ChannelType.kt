@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.logic.model
+package eu.dezeekees.melay.common.payload
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

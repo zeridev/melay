@@ -1,5 +1,6 @@
 package eu.dezeekees.melay.server.logic.model
 
+import eu.dezeekees.melay.common.payload.ChannelType
 import kotlinx.datetime.Instant
 import java.util.UUID
 
