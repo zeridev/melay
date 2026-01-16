@@ -1,4 +1,4 @@
-package eu.dezeekees.melay.server.api.payload.community
+package eu.dezeekees.melay.app.logic.model.community
 
 import eu.dezeekees.melay.common.payload.community.UpdateCommunityCommand
 import kotlinx.serialization.Contextual

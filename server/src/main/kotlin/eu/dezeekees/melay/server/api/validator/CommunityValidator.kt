@@ -18,9 +18,6 @@ fun RequestValidationConfig.communityValidator() {
                 reasons.add("name: Community name must be alphanumeric or use an underscore")
         }
 
-        if(request.description.isEmpty())
-            reasons += "description: Description is required"
-
         if(reasons.isNotEmpty())
             return@validate ValidationResult.Invalid(reasons)
 

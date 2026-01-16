@@ -22,9 +22,15 @@ import eu.dezeekees.melay.app.presentation.ui.component.main.channels.CreateChan
 import eu.dezeekees.melay.app.presentation.ui.component.main.chat.ChatSection
 import eu.dezeekees.melay.app.presentation.ui.component.main.chat.OnlineUser
 import eu.dezeekees.melay.app.presentation.ui.component.main.communities.CommunityBar
+import eu.dezeekees.melay.app.presentation.ui.component.main.communities.CreateCommunityPopup
+import eu.dezeekees.melay.app.presentation.ui.component.main.communities.DiscoverCommunityPopup
+import eu.dezeekees.melay.app.presentation.ui.component.main.communities.UpdateCommunityPopup
 import eu.dezeekees.melay.app.presentation.ui.theme.MelayTheme
 import eu.dezeekees.melay.app.presentation.viewmodel.MainScreenViewmodel
 import eu.dezeekees.melay.app.presentation.viewmodel.main.CreateChannelPopupViewModel
+import eu.dezeekees.melay.app.presentation.viewmodel.main.CreateCommunityPopupViewModel
+import eu.dezeekees.melay.app.presentation.viewmodel.main.DiscoverCommunityPopupViewModel
+import eu.dezeekees.melay.app.presentation.viewmodel.main.UpdateCommunityPopupViewModel
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -32,6 +38,9 @@ import org.koin.compose.viewmodel.koinViewModel
 fun MainScreen(
     viewmodel: MainScreenViewmodel = koinViewModel(),
     createChannelPopupViewModel: CreateChannelPopupViewModel = koinViewModel(),
+    createCommunityPopupViewModel: CreateCommunityPopupViewModel = koinViewModel(),
+    updateCommunityPopupViewModel: UpdateCommunityPopupViewModel = koinViewModel(),
+    discoverCommunityPopupViewModel: DiscoverCommunityPopupViewModel = koinViewModel(),
 ) {
     val isLoading by viewmodel.isLoading.collectAsStateWithLifecycle()
     val uiState by viewmodel.uiState.collectAsStateWithLifecycle()
@@ -57,6 +66,23 @@ fun MainScreen(
             CommunityBar(
                 uiState = uiState,
                 onCommunityBarItemClick = { communityId -> viewmodel.setSelectedCommunity(communityId) },
+                onCreateCommunityClick = { createCommunityPopupViewModel.open() },
+                onDiscoverCommunityClick = { discoverCommunityPopupViewModel.open(uiState.userCommunities) },
+            )
+
+            CreateCommunityPopup(
+                createCommunityPopupViewModel,
+                onCreateSuccess = {}
+            )
+
+            UpdateCommunityPopup(
+                updateCommunityPopupViewModel,
+                onUpdateSuccess = { viewmodel.reloadAllCommunities() }
+            )
+
+            DiscoverCommunityPopup(
+                discoverCommunityPopupViewModel,
+                onSuccessfulJoin = { viewmodel.reloadAllCommunities() }
             )
 
             // main screen
@@ -71,11 +97,13 @@ fun MainScreen(
                 ChannelsRow(
                     viewmodel.selectedCommunity,
                     onCreateChannelClick = { createChannelPopupViewModel.open() },
-                    onLeaveCommunityClick = {},
+                    onLeaveCommunityClick = { viewmodel.leaveSelectedCommunity() },
                     onDeleteChannelClick = { channelId -> createChannelPopupViewModel.delete(
                         channelId,
                         onSuccess = { viewmodel.reloadAllCommunities() }
-                    ) }
+                    ) },
+                    onUpdateCommunityClick = { updateCommunityPopupViewModel.open(viewmodel.selectedCommunity) },
+                    onDeleteCommunityClick = { viewmodel.deleteSelectedCommunity() }
                 )
 
                 CreateChannelPopup(

@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.outlined.AddCircle
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -36,6 +38,8 @@ fun ServerNameDropdown(
     selectedCommunity: CommunityResponse,
     onCreateChannelClick: () -> Unit,
     onLeaveCommunityClick: () -> Unit,
+    onUpdateCommunityClick: () -> Unit,
+    onDeleteCommunityClick: () -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -70,6 +74,15 @@ fun ServerNameDropdown(
             shape = MaterialTheme.shapes.medium,
         ) {
             ServerNameDropdownItem(
+                text = "Edit Community",
+                onClick = {
+                    expanded = false
+                    onUpdateCommunityClick()
+                },
+                leadingIcon = Icons.Outlined.Edit,
+            )
+
+            ServerNameDropdownItem(
                 text = "Create Channel",
                 onClick = {
                     expanded = false
@@ -85,6 +98,16 @@ fun ServerNameDropdown(
                     onLeaveCommunityClick()
                 },
                 leadingIcon = Icons.AutoMirrored.Default.ExitToApp,
+                textColor = MaterialTheme.colorScheme.error,
+            )
+
+            ServerNameDropdownItem(
+                text = "Delete Community",
+                onClick = {
+                    expanded = false
+                    onDeleteCommunityClick()
+                },
+                leadingIcon = Icons.Default.Delete,
                 textColor = MaterialTheme.colorScheme.error,
             )
         }

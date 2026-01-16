@@ -18,12 +18,12 @@ fun CreateChannelPopup(
     if(uiState.popupOpen) {
         AlertDialog(
             onDismissRequest = viewModel::dismiss,
-            title = { Text("Create community") },
+            title = { Text("Create channel") },
             text = {
                 OutlinedTextField(
                     value = uiState.channelName,
                     onValueChange = viewModel::onNameChanged,
-                    label = { Text("Community name") }
+                    label = { Text("Channel name") }
                 )
             },
             confirmButton = {

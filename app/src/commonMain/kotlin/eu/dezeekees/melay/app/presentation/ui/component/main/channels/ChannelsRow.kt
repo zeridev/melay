@@ -1,16 +1,7 @@
 package eu.dezeekees.melay.app.presentation.ui.component.main.channels
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,8 +14,7 @@ import coil3.compose.AsyncImage
 import eu.dezeekees.melay.app.logic.model.community.CommunityResponse
 import eu.dezeekees.melay.app.presentation.ui.component.main.communities.ServerNameDropdown
 import eu.dezeekees.melay.app.presentation.ui.theme.MelayTheme
-import eu.dezeekees.melay.app.presentation.viewmodel.MainScreenViewmodel
-import java.util.UUID
+import java.util.*
 
 @Composable
 fun ChannelsRow(
@@ -32,6 +22,8 @@ fun ChannelsRow(
     onCreateChannelClick: () -> Unit,
     onLeaveCommunityClick: () -> Unit,
     onDeleteChannelClick: (id: UUID) -> Unit,
+    onUpdateCommunityClick: () -> Unit,
+    onDeleteCommunityClick: () -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -73,6 +65,8 @@ fun ChannelsRow(
             selectedCommunity,
             onCreateChannelClick,
             onLeaveCommunityClick,
+            onUpdateCommunityClick,
+            onDeleteCommunityClick
         )
 
         Box(

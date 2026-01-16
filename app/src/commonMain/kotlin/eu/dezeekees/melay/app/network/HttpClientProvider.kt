@@ -19,6 +19,7 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.kotlinx.json.json
 import io.rsocket.kotlin.ktor.client.RSocketSupport
 import kotlinx.serialization.json.Json
@@ -31,7 +32,7 @@ import java.nio.channels.UnresolvedAddressException
 expect fun createHttpClientEngine(): HttpClientEngine
 
 class HttpClientProvider(
-    private val tokenService: TokenService
+    private val tokenService: TokenService,
 ) {
     private var client: HttpClient? = null
 
@@ -79,6 +80,11 @@ class HttpClientProvider(
             HttpResponseValidator {
                 validateResponse { response ->
                     if (!response.status.isSuccess()) {
+
+                        if (response.status == HttpStatusCode.Unauthorized) {
+                            tokenService.deleteToken()
+                        }
+
                         throw ApiException.HttpError(
                             status = response.status,
                             response = response.takeIf { response.status.value == 400 }
@@ -92,7 +98,7 @@ class HttpClientProvider(
                             NetworkException(NetworkErrorType.NO_INTERNET)
                         is SerializationException ->
                             NetworkException(NetworkErrorType.SERIALIZATION)
-                        is ApiException ->
+                        is ApiException.HttpError ->
                             cause
                         else ->
                             NetworkException(NetworkErrorType.UNKNOWN)

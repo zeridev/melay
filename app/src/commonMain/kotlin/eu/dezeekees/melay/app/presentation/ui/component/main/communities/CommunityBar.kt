@@ -31,6 +31,8 @@ import java.util.UUID
 fun CommunityBar(
     uiState: MainScreenViewmodel.UIState,
     onCommunityBarItemClick: (UUID) -> Unit,
+    onCreateCommunityClick: () -> Unit,
+    onDiscoverCommunityClick: () -> Unit,
 ) {
     val communities = uiState.userCommunities
 
@@ -58,7 +60,7 @@ fun CommunityBar(
             )
         ) {
             FilledIconButton(
-                onClick = { },
+                onClick = onCreateCommunityClick,
                 modifier = Modifier.size(42.dp)
             ) { Icon(Icons.Default.Add, contentDescription = "create community") }
         }
@@ -73,7 +75,7 @@ fun CommunityBar(
             )
         ) {
             FilledIconButton(
-                onClick = {  },
+                onClick = onDiscoverCommunityClick,
                 modifier = Modifier.size(42.dp)
             ) { Icon(Icons.Default.Explore, contentDescription = "discover community") }
         }

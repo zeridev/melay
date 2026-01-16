@@ -7,14 +7,18 @@ import eu.dezeekees.melay.server.api.payload.community.CreateCommunityRequest
 import eu.dezeekees.melay.server.api.payload.community.UpdateCommunityRequest
 import eu.dezeekees.melay.server.api.payload.community.UserCommunityMembershipRequest
 import eu.dezeekees.melay.server.api.util.getUUIDFromParam
+import eu.dezeekees.melay.server.logic.exception.UnauthorizedException
 import eu.dezeekees.melay.server.logic.service.CommunityService
 import eu.dezeekees.melay.server.logic.service.UserCommunityMembershipService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.auth.authenticate
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
+import java.util.UUID
 
 fun Route.communityRoutes() {
     val communityService by inject<CommunityService>()
@@ -55,17 +59,28 @@ fun Route.communityRoutes() {
             }
 
             post {
+                val authPrincipal = call.principal<JWTPrincipal>()
+                    ?: throw UnauthorizedException("Not authenticated")
+                val myUserId = runCatching { UUID.fromString(authPrincipal.payload.subject) }.getOrNull()
+                    ?: throw UnauthorizedException("Invalid UUID")
+
                 val request = call.receive<UserCommunityMembershipRequest>()
                 val communityId = request.communityId
-                userCommunityMembershipService.addMembership(request.userId, communityId)
+
+                val userId = request.userId ?: myUserId
+                userCommunityMembershipService.addMembership(userId, communityId)
 
                 val community = communityService.findById(communityId)
                 call.respond(CommunityMapper.toResponse(community))
             }
 
-            delete("/{communityId}/{userId}") {
+            delete("/{communityId}") {
+                val authPrincipal = call.principal<JWTPrincipal>()
+                    ?: throw UnauthorizedException("Not authenticated")
+                val userId = runCatching { UUID.fromString(authPrincipal.payload.subject) }.getOrNull()
+                    ?: throw UnauthorizedException("Invalid UUID")
+
                 val communityId = call.parameters.getUUIDFromParam("communityId")
-                val userId = call.parameters.getUUIDFromParam("userId")
                 userCommunityMembershipService.removeMembership(userId, communityId)
                 call.respond(HttpStatusCode.OK)
             }

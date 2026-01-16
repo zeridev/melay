@@ -7,6 +7,8 @@ import eu.dezeekees.melay.app.logic.model.community.CommunityResponse
 import eu.dezeekees.melay.app.logic.model.user.UserResponse
 import eu.dezeekees.melay.app.logic.repository.UserDataStoreRepository
 import eu.dezeekees.melay.app.logic.repository.UserRepository
+import eu.dezeekees.melay.common.Routes
+import java.util.UUID
 
 data class UserService(
     private val userRepository: UserRepository,
