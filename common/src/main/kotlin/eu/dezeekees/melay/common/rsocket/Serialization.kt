@@ -1,5 +1,7 @@
 package eu.dezeekees.melay.common.rsocket
 
+import eu.dezeekees.melay.common.Routes
+import eu.dezeekees.melay.common.kotlinx.UUIDSerializer
 import io.rsocket.kotlin.ExperimentalMetadataApi
 import io.rsocket.kotlin.metadata.RoutingMetadata
 import io.rsocket.kotlin.metadata.metadata
@@ -11,10 +13,16 @@ import kotlinx.io.readByteArray
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromByteArray
 import kotlinx.serialization.encodeToByteArray
+import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.protobuf.ProtoBuf
+import java.util.UUID
 
 @ExperimentalSerializationApi
-val ConfiguredProtoBuf = ProtoBuf
+val ConfiguredProtoBuf = ProtoBuf {
+    serializersModule = SerializersModule {
+        contextual(UUID::class, UUIDSerializer)
+    }
+}
 
 @ExperimentalSerializationApi
 inline fun <reified T> ProtoBuf.decodeFromPayload(payload: Payload): T = decodeFromByteArray(payload.data.readByteArray())

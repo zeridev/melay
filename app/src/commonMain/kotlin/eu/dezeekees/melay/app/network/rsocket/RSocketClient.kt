@@ -3,7 +3,9 @@ package eu.dezeekees.melay.app.network.rsocket
 import eu.dezeekees.melay.app.logic.`interface`.IRSocketClient
 import eu.dezeekees.melay.app.network.HttpClientProvider
 import io.ktor.client.HttpClient
+import io.ktor.client.plugins.websocket.WebSockets
 import io.rsocket.kotlin.RSocket
+import io.rsocket.kotlin.ktor.client.RSocketSupport
 import io.rsocket.kotlin.ktor.client.rSocket
 
 class RSocketClient(

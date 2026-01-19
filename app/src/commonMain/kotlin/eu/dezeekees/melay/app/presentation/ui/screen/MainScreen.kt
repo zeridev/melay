@@ -96,6 +96,7 @@ fun MainScreen(
                 // left row (channels & logged in user)
                 ChannelsRow(
                     viewmodel.selectedCommunity,
+                    viewmodel.selectedChannel,
                     onCreateChannelClick = { createChannelPopupViewModel.open() },
                     onLeaveCommunityClick = { viewmodel.leaveSelectedCommunity() },
                     onDeleteChannelClick = { channelId -> createChannelPopupViewModel.delete(
@@ -103,7 +104,8 @@ fun MainScreen(
                         onSuccess = { viewmodel.reloadAllCommunities() }
                     ) },
                     onUpdateCommunityClick = { updateCommunityPopupViewModel.open(viewmodel.selectedCommunity) },
-                    onDeleteCommunityClick = { viewmodel.deleteSelectedCommunity() }
+                    onDeleteCommunityClick = { viewmodel.deleteSelectedCommunity() },
+                    onSelectChannelClick = { channelId -> viewmodel.setSelectedChannel(channelId) },
                 )
 
                 CreateChannelPopup(
@@ -132,7 +134,11 @@ fun MainScreen(
                             modifier = Modifier
                                 .weight(1f)
                         ) {
-                            ChatSection()
+                            ChatSection(
+                                uiState,
+                                onSendMessage = { viewmodel.sendMessage() },
+                                onChatInputChanged = { message -> viewmodel.onChatInputTextChange(message) },
+                            )
                         }
 
                         // right row (community users)

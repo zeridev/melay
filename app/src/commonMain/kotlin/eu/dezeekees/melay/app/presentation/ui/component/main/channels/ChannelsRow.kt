@@ -11,6 +11,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import eu.dezeekees.melay.app.logic.model.channel.ChannelResponse
 import eu.dezeekees.melay.app.logic.model.community.CommunityResponse
 import eu.dezeekees.melay.app.presentation.ui.component.main.communities.ServerNameDropdown
 import eu.dezeekees.melay.app.presentation.ui.theme.MelayTheme
@@ -19,11 +20,13 @@ import java.util.*
 @Composable
 fun ChannelsRow(
     selectedCommunity: CommunityResponse,
+    selectedChannel: ChannelResponse,
     onCreateChannelClick: () -> Unit,
     onLeaveCommunityClick: () -> Unit,
     onDeleteChannelClick: (id: UUID) -> Unit,
     onUpdateCommunityClick: () -> Unit,
     onDeleteCommunityClick: () -> Unit,
+    onSelectChannelClick: (id: UUID) -> Unit,
 ) {
     Column(
         modifier = Modifier
@@ -93,8 +96,8 @@ fun ChannelsRow(
                 ChannelButton(
                     channelName = channel.name,
                     channelId = channel.id,
-                    isActive = false,
-                    onClick = {},
+                    isActive = channel.id == selectedChannel.id,
+                    onClick = { onSelectChannelClick(channel.id) },
                     onDelete = { channelId -> onDeleteChannelClick(channelId) },
                 )
             }

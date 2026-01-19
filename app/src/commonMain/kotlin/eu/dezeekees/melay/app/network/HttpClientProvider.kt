@@ -79,16 +79,23 @@ class HttpClientProvider(
 
             HttpResponseValidator {
                 validateResponse { response ->
-                    if (!response.status.isSuccess()) {
+//                    if (!response.status.isSuccess()) {
+//
+//                        if (response.status == HttpStatusCode.Unauthorized) {
+//                            tokenService.deleteToken()
+//                        }
+//
+//                        throw ApiException.HttpError(
+//                            status = response.status,
+//                            response = response.takeIf { response.status.value == 400 }
+//                        )
+//                    }
 
-                        if (response.status == HttpStatusCode.Unauthorized) {
+                    when (response.status) {
+                        HttpStatusCode.Unauthorized -> {
                             tokenService.deleteToken()
+                            throw ApiException.HttpError(status = response.status)
                         }
-
-                        throw ApiException.HttpError(
-                            status = response.status,
-                            response = response.takeIf { response.status.value == 400 }
-                        )
                     }
                 }
 

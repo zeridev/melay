@@ -5,17 +5,20 @@ import eu.dezeekees.melay.app.logic.`interface`.IRSocketClient
 import eu.dezeekees.melay.app.logic.repository.AuthRepository
 import eu.dezeekees.melay.app.logic.repository.ChannelRepository
 import eu.dezeekees.melay.app.logic.repository.CommunityRepository
+import eu.dezeekees.melay.app.logic.repository.MessageRepository
 import eu.dezeekees.melay.app.logic.repository.UserRepository
 import eu.dezeekees.melay.app.logic.service.AuthService
 import eu.dezeekees.melay.app.logic.service.AuthStateProvider
 import eu.dezeekees.melay.app.logic.service.ChannelService
 import eu.dezeekees.melay.app.logic.service.CommunityService
+import eu.dezeekees.melay.app.logic.service.MessageService
 import eu.dezeekees.melay.app.logic.service.TokenService
 import eu.dezeekees.melay.app.logic.service.UserService
 import eu.dezeekees.melay.app.network.HttpClientProvider
 import eu.dezeekees.melay.app.network.http.client.AuthClient
 import eu.dezeekees.melay.app.network.http.client.ChannelClient
 import eu.dezeekees.melay.app.network.http.client.CommunityClient
+import eu.dezeekees.melay.app.network.http.client.MessageClient
 import eu.dezeekees.melay.app.network.http.client.UserClient
 import eu.dezeekees.melay.app.network.rsocket.RSocketClient
 import eu.dezeekees.melay.app.presentation.viewmodel.AppViewModel
@@ -48,6 +51,9 @@ val sharedModule = module {
 
     single<CommunityRepository> { CommunityClient(get()) }
     singleOf(::CommunityService)
+
+    single<MessageRepository> { MessageClient(get()) }
+    singleOf(::MessageService)
 
     viewModelOf(::LoginViewModel)
     viewModelOf(::MainScreenViewmodel)

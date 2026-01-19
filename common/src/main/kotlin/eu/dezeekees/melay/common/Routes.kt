@@ -24,6 +24,11 @@ object Routes {
         object Channel {
             const val NAME = "${Api.NAME}/channel"
         }
+
+        object Message {
+            const val NAME = "${Api.NAME}/message"
+            const val CHANNEL = "${NAME}/channel"
+        }
     }
     object Socket {
         object Federation {

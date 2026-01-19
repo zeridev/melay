@@ -22,13 +22,15 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import eu.dezeekees.melay.app.presentation.ui.theme.MelayTheme
+import eu.dezeekees.melay.app.presentation.viewmodel.MainScreenViewmodel
 
 @Composable
 fun ChatInput(
     modifier: Modifier = Modifier,
-    onSendMessage: (String) -> Unit
+    onSendMessage: () -> Unit,
+    uiState: MainScreenViewmodel.UIState,
+    onChatInputChanged: (TextFieldValue) -> Unit = {},
 ) {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
     val focusRequester = remember { FocusRequester() }
 
     Box(
@@ -63,8 +65,8 @@ fun ChatInput(
 
             // Text field
             BasicTextField(
-                value = text,
-                onValueChange = { text = it },
+                value = uiState.chatInputText,
+                onValueChange = { onChatInputChanged(it) },
                 textStyle = TextStyle(color = MelayTheme.colorScheme.onSurfaceVariant, fontSize = 16.sp),
                 cursorBrush = SolidColor(MelayTheme.colorScheme.onSurfaceVariant),
                 modifier = Modifier
@@ -74,14 +76,14 @@ fun ChatInput(
                     .onPreviewKeyEvent { keyEvent ->
                         if (keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.Enter) {
                             if (keyEvent.isShiftPressed) {
-                                val newText = text.text + "\n"
-                                text = TextFieldValue(
+                                val newText = uiState.chatInputText.text + "\n"
+                                onChatInputChanged(TextFieldValue(
                                     text = newText,
                                     selection = TextRange(newText.length) // cursor at end
-                                )
+                                ))
                             } else {
                                 // Send message
-
+                                onSendMessage()
                             }
                             true
                         } else {
@@ -92,7 +94,7 @@ fun ChatInput(
             )
 
             IconButton(
-                onClick = { onSendMessage(text.text) },
+                onClick = onSendMessage,
                 modifier = Modifier
                     .size(32.dp)
                     .focusRequester(focusRequester),
