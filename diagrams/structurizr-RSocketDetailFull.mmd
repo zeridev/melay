@@ -1,0 +1,71 @@
+graph TB
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Messaging Platform - Backend - Components"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    subgraph 4 ["Client"]
+      style 4 fill:#ffffff,stroke:#9a9a9a,color:#9a9a9a
+
+      24["<div style='font-weight: bold'>HttpClientProvider</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin]</div><div style='font-size: 80%; margin-top:10px'>Provides Ktor HttpClient with<br />WebSockets & RSocket support</div>"]
+      style 24 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      25["<div style='font-weight: bold'>RSocketClient</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin]</div><div style='font-size: 80%; margin-top:10px'>Wraps an RSocket connection<br />and manages requestChannel<br />streams</div>"]
+      style 25 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      26["<div style='font-weight: bold'>MessageService (client)</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin]</div><div style='font-size: 80%; margin-top:10px'>Initiates requestChannel<br />calls and decodes payloads</div>"]
+      style 26 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      34["<div style='font-weight: bold'>TokenService</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / Service]</div><div style='font-size: 80%; margin-top:10px'>Provides stored auth token<br />and token lifecycle methods</div>"]
+      style 34 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      35["<div style='font-weight: bold'>MessageClient</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / HTTP Client]</div><div style='font-size: 80%; margin-top:10px'>HTTP client implementation of<br />MessageRepository<br />(non-streaming operations)</div>"]
+      style 35 fill:#dddddd,stroke:#9a9a9a,color:#000000
+    end
+
+    subgraph 5 ["Backend"]
+      style 5 fill:#ffffff,stroke:#9a9a9a,color:#9a9a9a
+
+      27["<div style='font-weight: bold'>RSocket Routing</div><div style='font-size: 70%; margin-top: 0px'>[Component: Ktor / rSocket]</div><div style='font-size: 80%; margin-top:10px'>Registers rSocket endpoints<br />and delegates to handlers</div>"]
+      style 27 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      28["<div style='font-weight: bold'>PayloadRouteMatcher</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin]</div><div style='font-size: 80%; margin-top:10px'>Parses RoutingMetadata from<br />Payload and extracts route<br />params</div>"]
+      style 28 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      29["<div style='font-weight: bold'>MessageRSocketHandler</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin]</div><div style='font-size: 80%; margin-top:10px'>Handles incoming<br />requestChannel streams and<br />maps Messages to Payloads</div>"]
+      style 29 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      30["<div style='font-weight: bold'>MessageService (server)</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / Service]</div><div style='font-size: 80%; margin-top:10px'>Provides stream(channelId)<br />returning a Flow of messages</div>"]
+      style 30 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      31["<div style='font-weight: bold'>MessageBroadcaster</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / Flow]</div><div style='font-size: 80%; margin-top:10px'>Publishes message events to<br />SharedFlow streams per<br />channel</div>"]
+      style 31 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      36["<div style='font-weight: bold'>MessageRepository</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / Repository]</div><div style='font-size: 80%; margin-top:10px'>Repository abstraction for<br />message CRUD operations</div>"]
+      style 36 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      37["<div style='font-weight: bold'>MessageDao</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / DAO]</div><div style='font-size: 80%; margin-top:10px'>Database DAO implementing<br />MessageRepository using<br />Exposed</div>"]
+      style 37 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      38["<div style='font-weight: bold'>API MessageMapper</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / Mapper]</div><div style='font-size: 80%; margin-top:10px'>Maps domain models to API<br />responses and back</div>"]
+      style 38 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      39["<div style='font-weight: bold'>Data MessageMapper</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / Mapper]</div><div style='font-size: 80%; margin-top:10px'>Maps database entities to<br />domain models</div>"]
+      style 39 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      40["<div style='font-weight: bold'>ConfigRSocket</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / Ktor Config]</div><div style='font-size: 80%; margin-top:10px'>Installs WebSockets &<br />RSocketSupport and configures<br />rSocket routes</div>"]
+      style 40 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      41["<div style='font-weight: bold'>RSocketRoutes</div><div style='font-size: 70%; margin-top: 0px'>[Component: Kotlin / Routing]</div><div style='font-size: 80%; margin-top:10px'>Defines rSocket routing and<br />requestChannel handlers</div>"]
+      style 41 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      42["<div style='font-weight: bold'>MessageRoutes</div><div style='font-size: 70%; margin-top: 0px'>[Component: Ktor / Routing]</div><div style='font-size: 80%; margin-top:10px'>HTTP routes for message CRUD<br />(creates messages over REST)</div>"]
+      style 42 fill:#dddddd,stroke:#9a9a9a,color:#000000
+    end
+
+    26-. "<div>Uses to open and manage<br />RSocket connection</div><div style='font-size: 70%'></div>" .->25
+    25-. "<div>Gets configured HttpClient</div><div style='font-size: 70%'></div>" .->24
+    27-. "<div>Parses incoming payload route</div><div style='font-size: 70%'></div>" .->28
+    27-. "<div>Delegates to</div><div style='font-size: 70%'></div>" .->29
+    29-. "<div>Subscribes to</div><div style='font-size: 70%'></div>" .->30
+    30-. "<div>Receives published messages<br />from</div><div style='font-size: 70%'></div>" .->31
+    31-. "<div>Publishes to</div><div style='font-size: 70%'></div>" .->30
+    24-. "<div>Loads/supplies auth token</div><div style='font-size: 70%'></div>" .->34
+    26-. "<div>Uses for REST operations if<br />needed</div><div style='font-size: 70%'></div>" .->35
+    30-. "<div>Reads/writes messages via</div><div style='font-size: 70%'></div>" .->36
+    36-. "<div>Implements using</div><div style='font-size: 70%'></div>" .->37
+    37-. "<div>Uses to map DB entities</div><div style='font-size: 70%'></div>" .->39
+    29-. "<div>Maps domain messages to API<br />responses</div><div style='font-size: 70%'></div>" .->38
+    40-. "<div>Registers rSocket routes</div><div style='font-size: 70%'></div>" .->41
+    41-. "<div>Delegates to routing<br />internals</div><div style='font-size: 70%'></div>" .->27
+    42-. "<div>Creates messages via</div><div style='font-size: 70%'></div>" .->30
+    35-. "<div>Calls create/update messages<br />via HTTP</div><div style='font-size: 70%'></div>" .->42
+    30-. "<div>Broadcasts newly created<br />messages to</div><div style='font-size: 70%'></div>" .->31
+    31-. "<div>Publishes updates to active<br />requestChannel streams</div><div style='font-size: 70%'></div>" .->27
+    26-. "<div>Calls requestChannel on</div><div style='font-size: 70%'>[RSocket Payload route]</div>" .->27
+  end

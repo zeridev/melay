@@ -26,6 +26,83 @@
     } ],
     "softwareSystems" : [ {
       "containers" : [ {
+        "components" : [ {
+          "description" : "Provides Ktor HttpClient with WebSockets & RSocket support",
+          "documentation" : { },
+          "id" : "24",
+          "name" : "HttpClientProvider",
+          "relationships" : [ {
+            "description" : "Loads/supplies auth token",
+            "destinationId" : "34",
+            "id" : "48",
+            "sourceId" : "24",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin"
+        }, {
+          "description" : "Wraps an RSocket connection and manages requestChannel streams",
+          "documentation" : { },
+          "id" : "25",
+          "name" : "RSocketClient",
+          "relationships" : [ {
+            "description" : "Gets configured HttpClient",
+            "destinationId" : "24",
+            "id" : "33",
+            "sourceId" : "25",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin"
+        }, {
+          "description" : "Initiates requestChannel calls and decodes payloads",
+          "documentation" : { },
+          "id" : "26",
+          "name" : "MessageService (client)",
+          "relationships" : [ {
+            "description" : "Uses to open and manage RSocket connection",
+            "destinationId" : "25",
+            "id" : "32",
+            "sourceId" : "26",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Uses for REST operations if needed",
+            "destinationId" : "35",
+            "id" : "49",
+            "sourceId" : "26",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Calls requestChannel on",
+            "destinationId" : "27",
+            "id" : "60",
+            "sourceId" : "26",
+            "tags" : "Relationship",
+            "technology" : "RSocket Payload route"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin"
+        }, {
+          "description" : "Provides stored auth token and token lifecycle methods",
+          "documentation" : { },
+          "id" : "34",
+          "name" : "TokenService",
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / Service"
+        }, {
+          "description" : "HTTP client implementation of MessageRepository (non-streaming operations)",
+          "documentation" : { },
+          "id" : "35",
+          "name" : "MessageClient",
+          "relationships" : [ {
+            "description" : "Calls create/update messages via HTTP",
+            "destinationId" : "42",
+            "id" : "57",
+            "sourceId" : "35",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / HTTP Client"
+        } ],
         "description" : "A client app in Kotlin Multiplatform",
         "documentation" : { },
         "id" : "4",
@@ -126,6 +203,183 @@
           } ],
           "tags" : "Element,Component",
           "technology" : "Exposed / JDBC"
+        }, {
+          "description" : "Registers rSocket endpoints and delegates to handlers",
+          "documentation" : { },
+          "id" : "27",
+          "name" : "RSocket Routing",
+          "relationships" : [ {
+            "description" : "Parses incoming payload route",
+            "destinationId" : "28",
+            "id" : "43",
+            "sourceId" : "27",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Delegates to",
+            "destinationId" : "29",
+            "id" : "44",
+            "sourceId" : "27",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Ktor / rSocket"
+        }, {
+          "description" : "Parses RoutingMetadata from Payload and extracts route params",
+          "documentation" : { },
+          "id" : "28",
+          "name" : "PayloadRouteMatcher",
+          "tags" : "Element,Component",
+          "technology" : "Kotlin"
+        }, {
+          "description" : "Handles incoming requestChannel streams and maps Messages to Payloads",
+          "documentation" : { },
+          "id" : "29",
+          "name" : "MessageRSocketHandler",
+          "relationships" : [ {
+            "description" : "Subscribes to",
+            "destinationId" : "30",
+            "id" : "45",
+            "sourceId" : "29",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Maps domain messages to API responses",
+            "destinationId" : "38",
+            "id" : "53",
+            "sourceId" : "29",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin"
+        }, {
+          "description" : "Provides stream(channelId) returning a Flow of messages",
+          "documentation" : { },
+          "id" : "30",
+          "name" : "MessageService (server)",
+          "relationships" : [ {
+            "description" : "Receives published messages from",
+            "destinationId" : "31",
+            "id" : "46",
+            "sourceId" : "30",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Reads/writes messages via",
+            "destinationId" : "36",
+            "id" : "50",
+            "sourceId" : "30",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Broadcasts newly created messages to",
+            "destinationId" : "31",
+            "id" : "58",
+            "sourceId" : "30",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / Service"
+        }, {
+          "description" : "Publishes message events to SharedFlow streams per channel",
+          "documentation" : { },
+          "id" : "31",
+          "name" : "MessageBroadcaster",
+          "relationships" : [ {
+            "description" : "Publishes to",
+            "destinationId" : "30",
+            "id" : "47",
+            "sourceId" : "31",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Publishes updates to active requestChannel streams",
+            "destinationId" : "27",
+            "id" : "59",
+            "sourceId" : "31",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / Flow"
+        }, {
+          "description" : "Repository abstraction for message CRUD operations",
+          "documentation" : { },
+          "id" : "36",
+          "name" : "MessageRepository",
+          "relationships" : [ {
+            "description" : "Implements using",
+            "destinationId" : "37",
+            "id" : "51",
+            "sourceId" : "36",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / Repository"
+        }, {
+          "description" : "Database DAO implementing MessageRepository using Exposed",
+          "documentation" : { },
+          "id" : "37",
+          "name" : "MessageDao",
+          "relationships" : [ {
+            "description" : "Uses to map DB entities",
+            "destinationId" : "39",
+            "id" : "52",
+            "sourceId" : "37",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / DAO"
+        }, {
+          "description" : "Maps domain models to API responses and back",
+          "documentation" : { },
+          "id" : "38",
+          "name" : "API MessageMapper",
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / Mapper"
+        }, {
+          "description" : "Maps database entities to domain models",
+          "documentation" : { },
+          "id" : "39",
+          "name" : "Data MessageMapper",
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / Mapper"
+        }, {
+          "description" : "Installs WebSockets & RSocketSupport and configures rSocket routes",
+          "documentation" : { },
+          "id" : "40",
+          "name" : "ConfigRSocket",
+          "relationships" : [ {
+            "description" : "Registers rSocket routes",
+            "destinationId" : "41",
+            "id" : "54",
+            "sourceId" : "40",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / Ktor Config"
+        }, {
+          "description" : "Defines rSocket routing and requestChannel handlers",
+          "documentation" : { },
+          "id" : "41",
+          "name" : "RSocketRoutes",
+          "relationships" : [ {
+            "description" : "Delegates to routing internals",
+            "destinationId" : "27",
+            "id" : "55",
+            "sourceId" : "41",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Kotlin / Routing"
+        }, {
+          "description" : "HTTP routes for message CRUD (creates messages over REST)",
+          "documentation" : { },
+          "id" : "42",
+          "name" : "MessageRoutes",
+          "relationships" : [ {
+            "description" : "Creates messages via",
+            "destinationId" : "30",
+            "id" : "56",
+            "sourceId" : "42",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Ktor / Routing"
         } ],
         "description" : "Provides the messaging service via RSocket and a REST API.",
         "documentation" : { },
@@ -233,6 +487,132 @@
         "id" : "22"
       }, {
         "id" : "23"
+      } ]
+    }, {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 200,
+        "implementation" : "Dagre",
+        "nodeSeparation" : 600,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "containerId" : "5",
+      "description" : "Detailed RSocket component view (client + server pieces)",
+      "elements" : [ {
+        "id" : "24",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "25",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "26",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "27",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "28",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "29",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "30",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "31",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "34",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "35",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "36",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "37",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "38",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "39",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "40",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "41",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "42",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "RSocketDetailFull",
+      "name" : "Component View: Messaging Platform - Backend",
+      "order" : 4,
+      "relationships" : [ {
+        "id" : "32"
+      }, {
+        "id" : "33"
+      }, {
+        "id" : "43"
+      }, {
+        "id" : "44"
+      }, {
+        "id" : "45"
+      }, {
+        "id" : "46"
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "48"
+      }, {
+        "id" : "49"
+      }, {
+        "id" : "50"
+      }, {
+        "id" : "51"
+      }, {
+        "id" : "52"
+      }, {
+        "id" : "53"
+      }, {
+        "id" : "54"
+      }, {
+        "id" : "55"
+      }, {
+        "id" : "56"
+      }, {
+        "id" : "57"
+      }, {
+        "id" : "58"
+      }, {
+        "id" : "59"
+      }, {
+        "id" : "60"
       } ]
     } ],
     "configuration" : {
