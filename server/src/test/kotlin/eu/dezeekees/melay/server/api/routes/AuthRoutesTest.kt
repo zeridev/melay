@@ -15,14 +15,14 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import kotlinx.datetime.Clock
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.koin.test.KoinTest
 import org.mockito.kotlin.any
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.whenever
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlinx.datetime.Clock
 
 class AuthRoutesTest: TestBase(), KoinTest {
     val loginRequest = LoginRequest(
@@ -116,7 +116,7 @@ class AuthRoutesTest: TestBase(), KoinTest {
             createdAt = Clock.System.now(),
         )
 
-        whenever(mockUserRepository.save(any())).thenReturn(user)
+        whenever(mockUserRepository.create(any())).thenReturn(user)
         whenever(mockUserRepository.findByUsername(any())).thenReturn(null)
 
         val response: UserResponse = client.post(Routes.Api.Auth.REGISTER) {
@@ -138,7 +138,7 @@ class AuthRoutesTest: TestBase(), KoinTest {
             createdAt = Clock.System.now(),
         )
 
-        whenever(mockUserRepository.save(any())).thenReturn(existingUser)
+        whenever(mockUserRepository.create(any())).thenReturn(existingUser)
         whenever(mockUserRepository.findByUsername(any())).thenReturn(existingUser)
 
         val response = client.post(Routes.Api.Auth.REGISTER) {

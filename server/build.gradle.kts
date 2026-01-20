@@ -31,7 +31,10 @@ dependencies {
     implementation(libs.ktor.server.auth.jwt)
     implementation(libs.ktor.server.swagger)
     implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.rsocket)
     implementation(libs.logback.classic)
+
+    implementation(libs.kotlinx.serialization.protobuf)
 
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j)
@@ -59,6 +62,10 @@ kotlin {
         freeCompilerArgs.addAll("-Xjsr305=strict", "-Xannotation-default-target=param-property")
     }
     jvmToolchain(21)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 

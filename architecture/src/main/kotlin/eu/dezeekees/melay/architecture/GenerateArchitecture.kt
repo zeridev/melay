@@ -1,136 +1,104 @@
 package eu.dezeekees.melay.architecture
 
 import com.structurizr.Workspace
-import com.structurizr.component.ComponentFinderBuilder
-import com.structurizr.component.ComponentFinderStrategyBuilder
-import com.structurizr.component.filter.ExcludeFullyQualifiedNameRegexFilter
-import com.structurizr.component.filter.IncludeFullyQualifiedNameRegexFilter
-import com.structurizr.component.matcher.NameSuffixTypeMatcher
-import com.structurizr.component.matcher.RegexTypeMatcher
-import com.structurizr.component.description.FirstSentenceDescriptionStrategy
-import com.structurizr.component.description.DefaultDescriptionStrategy
 import com.structurizr.util.WorkspaceUtils
 import java.io.File
 
 fun main() {
-    val workspace = Workspace("Melay", "Architecture model for a Kotlin Multiplatform client interacting with a RSocket/REST API backend.")
+    val workspace = Workspace(
+        "Melay",
+        "Architecture model for a Kotlin Multiplatform client interacting with a RSocket/REST API backend."
+    )
     val model = workspace.model
 
+    // --- People & Systems ---
     val endUser = model.addPerson("End user", "Sends and receives messages on the platform.")
-
-    val messagingPlatform = model.addSoftwareSystem("Messaging Platform", "The complete application providing real-time and persistent messaging capabilities.")
-
-    // Relationship (C1)
+    val messagingPlatform = model.addSoftwareSystem(
+        "Messaging Platform",
+        "The complete application providing real-time and persistent messaging capabilities."
+    )
     endUser.uses(messagingPlatform, "Sends and receives messages using")
 
-    // Containers inside the Messaging Platform
-    val clientApp = messagingPlatform.addContainer("Client", "A client app in Kotlin Multiplatform", "Kotlin Multiplatform (Android, Jvm/Desktop)")
-    val backend = messagingPlatform.addContainer("Backend", "Provides the messaging service via RSocket and a REST API.", "Ktor/Rsocket Api")
-    val postgres = messagingPlatform.addContainer("Postgres Database", "Stores user information, communities, and messages.", "PostgreSQL")
-    val staticStore = messagingPlatform.addContainer("Static Store", "Stores attached files, profile pictures, and other static files.", "Local Disk Directory")
+    // --- Containers ---
+    val clientApp = messagingPlatform.addContainer(
+        "Client",
+        "A client app in Kotlin Multiplatform",
+        "Kotlin Multiplatform (Android, Jvm/Desktop)"
+    )
+    val backend = messagingPlatform.addContainer(
+        "Backend",
+        "Provides the messaging service via RSocket and a REST API.",
+        "Ktor/Rsocket Api"
+    )
+    val postgres = messagingPlatform.addContainer(
+        "Postgres Database",
+        "Stores user information, communities, and messages.",
+        "PostgreSQL"
+    )
+    val staticStore = messagingPlatform.addContainer(
+        "Static Store",
+        "Stores attached files, profile pictures, and other static files.",
+        "Local Disk Directory"
+    )
 
-    // Relationships (C2) - based on your diagram
-    endUser.uses(clientApp, "Uses", "Kotlin UI/OS Networking")
+    // --- Explicit Container Relationships (C2 Layer) ---
+    // Adding these explicitly ensures they appear in the Container View
+    endUser.uses(clientApp, "Uses", "Kotlin UI")
+    clientApp.uses(backend, "Makes API calls and opens socket streams", "REST/RSocket")
+    backend.uses(postgres, "Reads from and writes to", "JDBC/SQL")
+    backend.uses(staticStore, "Stores and retrieves media", "Internal API")
 
-    clientApp.uses(backend, "Makes API calls and socket connections to", "REST/RSocket")
+    // --- Backend Components (Structural Approach - C3 Layer) ---
+    val authModule =
+        backend.addComponent("Identity & Auth", "Handles user registration, login, and JWT security.", "Ktor / JWT")
+    val communityModule = backend.addComponent(
+        "Community & Channel Service",
+        "Manages communities, channels, and memberships.",
+        "Ktor / Business Logic"
+    )
+    val messagingModule =
+        backend.addComponent("Real-time Messaging", "Handles RSocket streams and message delivery.", "RSocket / Ktor")
+    val dataAccess = backend.addComponent(
+        "Data Access Layer",
+        "Abstracts database operations using Repositories and DAOs.",
+        "Exposed / JDBC"
+    )
 
-    backend.uses(postgres, "Reads and writes from", "JDBC/SQL")
-    backend.uses(staticStore, "Writes to and deletes from", "HTTP/Internal API")
+    // --- Component-Level Relationships ---
+    // Client to specific Modules
+    clientApp.uses(authModule, "Authenticates with", "REST/JSON")
+    clientApp.uses(communityModule, "Manages data via", "REST/JSON")
+    clientApp.uses(messagingModule, "Streams messages via", "RSocket")
 
-    val rootPackageRegex = "^eu\\.dezeekees\\.melay\\.server\\..*"
-    val excludeConfigRoutesRegex = ".*ConfigRoutes.*"
+    // Internal flows
+    authModule.uses(dataAccess, "Reads/Writes user data")
+    communityModule.uses(dataAccess, "Reads/Writes community data")
+    messagingModule.uses(dataAccess, "Persists messages")
 
-    ComponentFinderBuilder()
-        .forContainer(backend)
-        .fromClasses("server/build/libs/server-all.jar")
-        .filteredBy(IncludeFullyQualifiedNameRegexFilter(rootPackageRegex))
+    // Components to External Containers
+    dataAccess.uses(postgres, "Reads and writes from", "JDBC/SQL")
+    communityModule.uses(staticStore, "Stores profile/community images", "Internal API")
 
-        .withStrategy(
-            ComponentFinderStrategyBuilder()
-                .matchedBy(RegexTypeMatcher(".*RoutesKt"))
-                .withName(RouteNamingStrategy())
-                .filteredBy(ExcludeFullyQualifiedNameRegexFilter(excludeConfigRoutesRegex))
-                .withTechnology("Ktor Routes/Controller")
-                .build()
-        )
-        // 2. Match Services (Business Logic Layer)
-        .withStrategy(
-            ComponentFinderStrategyBuilder()
-                .matchedBy(NameSuffixTypeMatcher("Service"))
-                .withTechnology("Business Logic Service")
-                .build()
-        )
-        // 3. Match DAOs/Repositories (Persistence Layer)
-        .withStrategy(
-            ComponentFinderStrategyBuilder()
-                .matchedBy(NameSuffixTypeMatcher("Dao"))
-                .withTechnology("Data Access Object")
-                .build()
-        )
-        // 4. Match Utils (Helper Functions)
-        .withStrategy(
-            ComponentFinderStrategyBuilder()
-                .matchedBy(NameSuffixTypeMatcher("Util"))
-                .withTechnology("Utility Function")
-                .build()
-        )
-        .withStrategy(
-            ComponentFinderStrategyBuilder()
-                .matchedBy(NameSuffixTypeMatcher("Repository"))
-                .withTechnology("Repository Interface")
-                .build()
-        )
-
-        .build()
-        .run()
-
-    val userDao = backend.getComponentWithName("User Dao")
-
-    val userRepository = backend.getComponentWithName("User Repository")
-
-    val authService = backend.getComponentWithName("Auth Service")
-    val userService = backend.getComponentWithName("User Service")
-
-    val authRoutes = backend.getComponentWithName("Auth Routes")
-    val userRoutes = backend.getComponentWithName("User Routes")
-
-    userDao?.let {
-        it.uses(postgres, "Reads and writes user data from", "JDBC/SQL")
-        it.uses(userRepository, "Implements")
-    }
-
-    authService?.let {
-        it.uses(userRepository, "Uses repository to read and write data")
-        authRoutes?.uses(it, "")
-    }
-
-    userService?.let {
-        it.uses(userRepository, "Uses repository to write data")
-        userRoutes?.uses(it, "")
-    }
-
-    authRoutes?.let { clientApp.uses(it, "Makes authentication requests to", "REST/JSON") }
-    userRoutes?.let { clientApp.uses(it, "Makes user related requests to", "REST/JSON") }
-
+    // --- Views ---
     val views = workspace.views
 
-    // C1: Context View
-    val contextView = views.createSystemContextView(messagingPlatform, "Context")
+    // C1: Context
+    val contextView = views.createSystemContextView(messagingPlatform, "Context", "System Context Diagram")
     contextView.addAllElements()
     contextView.enableAutomaticLayout()
 
-    // C2: Container View
-    val containerView = views.createContainerView(messagingPlatform, "Containers", "The decomposition of the Messaging Platform into its high-level building blocks.")
-    containerView.addAllElements()
+    // C2: Containers
+    val containerView = views.createContainerView(messagingPlatform, "Containers", "High-level building blocks.")
+    containerView.addAllElements() // This will now include the explicit backend -> postgres/staticStore lines
     containerView.enableAutomaticLayout()
 
-    // C3: Component View (Backend)
-    val componentView = views.createComponentView(backend, "Backend Components", "The decomposition of the Backend API container.")
+    // C3: Components
+    val componentView = views.createComponentView(backend, "BackendOverview", "Structural overview of the Backend.")
     componentView.add(clientApp)
     componentView.add(postgres)
     componentView.add(staticStore)
     componentView.addAllComponents()
     componentView.enableAutomaticLayout()
 
-    WorkspaceUtils.saveWorkspaceToJson(workspace, File("melay.json"))
+    WorkspaceUtils.saveWorkspaceToJson(workspace, File("melay2.json"))
 }

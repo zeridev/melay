@@ -1,10 +1,10 @@
 [versions]
-agp = "8.11.2"
+agp = "8.12.0"
 android-compileSdk = "36"
 android-minSdk = "26"
 android-targetSdk = "36"
 android-buildToolsVersion = "36.0.0"
-androidx-activity = "1.12.1"
+androidx-activity = "1.12.2"
 androidx-appcompat = "1.7.1"
 androidx-core = "1.17.0"
 androidx-espresso = "3.7.0"
@@ -15,28 +15,24 @@ androidx-datastore = "1.2.0"
 material3-adaptive = "1.2.0"
 composeHotReload = "1.0.0"
 composeMultiplatform = "1.9.3"
-kotlin = "2.2.21"
+kotlin = "2.3.0"
 kotlinx-coroutines = "1.10.2"
 flyway = "11.16.0"
 mockito-kotlin = "6.1.0"
 exposed = "0.61.0"
 koin = "4.1.1"
 ktor = "3.3.3"
-logback = "1.5.21"
+logback = "1.5.22"
 postgres = "42.7.8"
 argon2-jvm = "2.12"
 material-icons-extended = "1.7.3"
 slf4j-android = "1.7.36"
 ktlint = "14.0.1"
-
-# --- proguard fixes ---
-proguard = "7.7.0"
-jetbrains-annotations = "26.0.1"
-json = "20231013"
-log4j = "2.24.2"
-semver = "0.10.2"
-gson = "2.11.0"
 structurizr = "5.0.3"
+rsocket = "0.20.0"
+kotlinx-serialization-protofuf = "1.9.0"
+kotlinx-datetime = "0.7.1"
+coil = "3.3.0"
 
 [libraries]
 # --- Kotlin + Core ---
@@ -81,6 +77,13 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "lo
 
 slf4j-android = { module = "org.slf4j:slf4j-android" , version.ref = "slf4j-android" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+kotlinx-serialization-protobuf = { module = "org.jetbrains.kotlinx:kotlinx-serialization-protobuf", version.ref = "kotlinx-serialization-protofuf" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime"}
+
+# -- RSocket --
+ktor-server-rsocket = { module = "io.rsocket.kotlin:ktor-server-rsocket", version.ref = "rsocket" }
+ktor-client-rsocket = { module = "io.rsocket.kotlin:ktor-client-rsocket", version.ref = "rsocket" }
+rsocket-core = { module = "io.rsocket.kotlin:rsocket-core", version.ref = "rsocket" }
 
 # --- Koin ---
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin" }
@@ -91,6 +94,10 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+
+# --- Coil ---
+coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
 # --- Argon2 ---
 argon2-jvm = { module = "de.mkammerer:argon2-jvm", version.ref = "argon2-jvm" }
@@ -110,16 +117,6 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 
 # --- Junit ---
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
-
-# --- proguard fixes ---
-proguard-base = { module = "com.guardsquare:proguard-base", version.ref = "proguard" }
-proguard-gradle = { module = "com.guardsquare:proguard-gradle", version.ref = "proguard" }
-jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotations" }
-json-json = { module = "org.json:json", version.ref = "json" }
-log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
-log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
-semver = { module = "com.github.zafarkhaja:java-semver", version.ref = "semver" }
-google-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 # --- structurizr ---
 structurizr-client = { module = "com.structurizr:structurizr-client", version.ref = "structurizr" }

@@ -1,0 +1,27 @@
+graph TB
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Messaging Platform - Containers"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    1["<div style='font-weight: bold'>End user</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>Sends and receives messages<br />on the platform.</div>"]
+    style 1 fill:#dddddd,stroke:#9a9a9a,color:#000000
+
+    subgraph 2 ["Messaging Platform"]
+      style 2 fill:#ffffff,stroke:#9a9a9a,color:#9a9a9a
+
+      4["<div style='font-weight: bold'>Client</div><div style='font-size: 70%; margin-top: 0px'>[Container: Kotlin Multiplatform (Android, Jvm/Desktop)]</div><div style='font-size: 80%; margin-top:10px'>A client app in Kotlin<br />Multiplatform</div>"]
+      style 4 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      5["<div style='font-weight: bold'>Backend</div><div style='font-size: 70%; margin-top: 0px'>[Container: Ktor/Rsocket Api]</div><div style='font-size: 80%; margin-top:10px'>Provides the messaging<br />service via RSocket and a<br />REST API.</div>"]
+      style 5 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      6["<div style='font-weight: bold'>Postgres Database</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL]</div><div style='font-size: 80%; margin-top:10px'>Stores user information,<br />communities, and messages.</div>"]
+      style 6 fill:#dddddd,stroke:#9a9a9a,color:#000000
+      7["<div style='font-weight: bold'>Static Store</div><div style='font-size: 70%; margin-top: 0px'>[Container: Local Disk Directory]</div><div style='font-size: 80%; margin-top:10px'>Stores attached files,<br />profile pictures, and other<br />static files.</div>"]
+      style 7 fill:#dddddd,stroke:#9a9a9a,color:#000000
+    end
+
+    5-. "<div>Reads from and writes to</div><div style='font-size: 70%'>[JDBC/SQL]</div>" .->6
+    5-. "<div>Stores and retrieves media</div><div style='font-size: 70%'>[Internal API]</div>" .->7
+    1-. "<div>Uses</div><div style='font-size: 70%'>[Kotlin UI]</div>" .->4
+    4-. "<div>Makes API calls and opens<br />socket streams</div><div style='font-size: 70%'>[REST/RSocket]</div>" .->5
+  end

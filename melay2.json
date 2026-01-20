@@ -1,0 +1,320 @@
+{
+  "configuration" : { },
+  "description" : "Architecture model for a Kotlin Multiplatform client interacting with a RSocket/REST API backend.",
+  "documentation" : { },
+  "id" : 0,
+  "model" : {
+    "people" : [ {
+      "description" : "Sends and receives messages on the platform.",
+      "id" : "1",
+      "name" : "End user",
+      "relationships" : [ {
+        "description" : "Sends and receives messages using",
+        "destinationId" : "2",
+        "id" : "3",
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Uses",
+        "destinationId" : "4",
+        "id" : "8",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "Kotlin UI"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "containers" : [ {
+        "description" : "A client app in Kotlin Multiplatform",
+        "documentation" : { },
+        "id" : "4",
+        "name" : "Client",
+        "relationships" : [ {
+          "description" : "Makes API calls and opens socket streams",
+          "destinationId" : "5",
+          "id" : "9",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "REST/RSocket"
+        }, {
+          "description" : "Authenticates with",
+          "destinationId" : "12",
+          "id" : "16",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "REST/JSON"
+        }, {
+          "description" : "Manages data via",
+          "destinationId" : "13",
+          "id" : "17",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "REST/JSON"
+        }, {
+          "description" : "Streams messages via",
+          "destinationId" : "14",
+          "id" : "18",
+          "sourceId" : "4",
+          "tags" : "Relationship",
+          "technology" : "RSocket"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Kotlin Multiplatform (Android, Jvm/Desktop)"
+      }, {
+        "components" : [ {
+          "description" : "Handles user registration, login, and JWT security.",
+          "documentation" : { },
+          "id" : "12",
+          "name" : "Identity & Auth",
+          "relationships" : [ {
+            "description" : "Reads/Writes user data",
+            "destinationId" : "15",
+            "id" : "19",
+            "sourceId" : "12",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Ktor / JWT"
+        }, {
+          "description" : "Manages communities, channels, and memberships.",
+          "documentation" : { },
+          "id" : "13",
+          "name" : "Community & Channel Service",
+          "relationships" : [ {
+            "description" : "Reads/Writes community data",
+            "destinationId" : "15",
+            "id" : "20",
+            "sourceId" : "13",
+            "tags" : "Relationship"
+          }, {
+            "description" : "Stores profile/community images",
+            "destinationId" : "7",
+            "id" : "23",
+            "sourceId" : "13",
+            "tags" : "Relationship",
+            "technology" : "Internal API"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Ktor / Business Logic"
+        }, {
+          "description" : "Handles RSocket streams and message delivery.",
+          "documentation" : { },
+          "id" : "14",
+          "name" : "Real-time Messaging",
+          "relationships" : [ {
+            "description" : "Persists messages",
+            "destinationId" : "15",
+            "id" : "21",
+            "sourceId" : "14",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "RSocket / Ktor"
+        }, {
+          "description" : "Abstracts database operations using Repositories and DAOs.",
+          "documentation" : { },
+          "id" : "15",
+          "name" : "Data Access Layer",
+          "relationships" : [ {
+            "description" : "Reads and writes from",
+            "destinationId" : "6",
+            "id" : "22",
+            "sourceId" : "15",
+            "tags" : "Relationship",
+            "technology" : "JDBC/SQL"
+          } ],
+          "tags" : "Element,Component",
+          "technology" : "Exposed / JDBC"
+        } ],
+        "description" : "Provides the messaging service via RSocket and a REST API.",
+        "documentation" : { },
+        "id" : "5",
+        "name" : "Backend",
+        "relationships" : [ {
+          "description" : "Reads from and writes to",
+          "destinationId" : "6",
+          "id" : "10",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "JDBC/SQL"
+        }, {
+          "description" : "Stores and retrieves media",
+          "destinationId" : "7",
+          "id" : "11",
+          "sourceId" : "5",
+          "tags" : "Relationship",
+          "technology" : "Internal API"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "Ktor/Rsocket Api"
+      }, {
+        "description" : "Stores user information, communities, and messages.",
+        "documentation" : { },
+        "id" : "6",
+        "name" : "Postgres Database",
+        "tags" : "Element,Container",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Stores attached files, profile pictures, and other static files.",
+        "documentation" : { },
+        "id" : "7",
+        "name" : "Static Store",
+        "tags" : "Element,Container",
+        "technology" : "Local Disk Directory"
+      } ],
+      "description" : "The complete application providing real-time and persistent messaging capabilities.",
+      "documentation" : { },
+      "id" : "2",
+      "name" : "Messaging Platform",
+      "tags" : "Element,Software System"
+    } ]
+  },
+  "name" : "Melay",
+  "views" : {
+    "componentViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 200,
+        "implementation" : "Dagre",
+        "nodeSeparation" : 600,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "containerId" : "5",
+      "description" : "Structural overview of the Backend.",
+      "elements" : [ {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "13",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "14",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "15",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "BackendOverview",
+      "name" : "Component View: Messaging Platform - Backend",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "16"
+      }, {
+        "id" : "17"
+      }, {
+        "id" : "18"
+      }, {
+        "id" : "19"
+      }, {
+        "id" : "20"
+      }, {
+        "id" : "21"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "23"
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "styles" : { },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 200,
+        "implementation" : "Dagre",
+        "nodeSeparation" : 600,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "High-level building blocks.",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "4",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "5",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "6",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "7",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "Containers",
+      "name" : "Container View: Messaging Platform",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "10"
+      }, {
+        "id" : "11"
+      }, {
+        "id" : "8"
+      }, {
+        "id" : "9"
+      } ],
+      "softwareSystemId" : "2"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 200,
+        "implementation" : "Dagre",
+        "nodeSeparation" : 600,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "System Context Diagram",
+      "elements" : [ {
+        "id" : "1",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "2",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "Context",
+      "name" : "System Context View: Messaging Platform",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "3"
+      } ],
+      "softwareSystemId" : "2"
+    } ]
+  }
+}

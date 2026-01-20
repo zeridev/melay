@@ -1,5 +1,6 @@
 package eu.dezeekees.melay.server.api.config
 
+import eu.dezeekees.melay.common.kotlinx.InvalidUuidException
 import eu.dezeekees.melay.server.api.payload.ErrorResponse
 import eu.dezeekees.melay.server.logic.exception.BadRequestException
 import eu.dezeekees.melay.server.logic.exception.NotFoundException
@@ -19,6 +20,12 @@ fun Application.configStatusPage() {
 
         exception<RequestValidationException> { call, cause ->
             call.respond(HttpStatusCode.BadRequest, ErrorResponse(cause.reasons))
+        }
+
+        exception<InvalidUuidException> { call, cause ->
+            call.respond(HttpStatusCode.BadRequest, ErrorResponse(listOf(
+                cause.message ?: "Unknown error occurred"
+            )))
         }
 
         exception<NotFoundException> { call, cause ->

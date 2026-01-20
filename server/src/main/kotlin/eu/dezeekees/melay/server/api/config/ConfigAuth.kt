@@ -18,7 +18,7 @@ fun Application.configAuth() {
             realm = JwtUtil.REALM
             verifier(JwtUtil.getVerifier(secret))
             validate { credential ->
-                val id = credential.payload.getClaim("id").asString()
+                val id = credential.payload.subject
                 if (id != null) {
                     JWTPrincipal(credential.payload)
                 } else null

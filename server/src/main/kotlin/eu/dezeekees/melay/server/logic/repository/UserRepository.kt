@@ -6,5 +6,5 @@ import java.util.*
 interface UserRepository {
     suspend fun findById(id: UUID): User?
     suspend fun findByUsername(username: String): User?
-    suspend fun save(user: User): User
+    suspend fun create(user: User): User
 }

@@ -1,5 +1,9 @@
 package eu.dezeekees.melay.server.api.config
 
+import eu.dezeekees.melay.server.data.entity.Channels
+import eu.dezeekees.melay.server.data.entity.Communities
+import eu.dezeekees.melay.server.data.entity.Messages
+import eu.dezeekees.melay.server.data.entity.UserCommunityMemberships
 import eu.dezeekees.melay.server.data.entity.Users
 import io.ktor.server.config.ApplicationConfig
 import org.jetbrains.exposed.sql.Database
@@ -21,7 +25,13 @@ object DatabaseConfig {
         )
 
         transaction {
-            SchemaUtils.create(Users)
+            SchemaUtils.create(
+                Users,
+                Communities,
+                Channels,
+                UserCommunityMemberships,
+                Messages
+            )
         }
     }
 }

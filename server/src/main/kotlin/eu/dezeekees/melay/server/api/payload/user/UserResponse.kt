@@ -1,10 +1,7 @@
 package eu.dezeekees.melay.server.api.payload.user
 
-import eu.dezeekees.melay.common.result.UserResult
-import kotlinx.datetime.Instant
+import eu.dezeekees.melay.common.payload.user.UserResult
 import kotlinx.serialization.Serializable
-import java.time.LocalDateTime
-import java.util.UUID
 
 @Serializable
 data class UserResponse(

@@ -51,16 +51,22 @@ kotlin {
                 implementation(libs.material3.adaptive)
                 implementation(libs.material.icons.extended)
 
+                implementation(libs.kotlinx.datetime)
+
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.content.negotiation)
                 implementation(libs.ktor.client.logging)
                 implementation(libs.ktor.client.auth)
                 implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.ktor.client.rsocket)
 
                 api(libs.koin.core)
                 implementation(libs.koin.compose)
                 implementation(libs.koin.compose.viewmodel)
                 implementation(libs.koin.compose)
+
+                implementation(libs.coil.compose)
+                implementation(libs.coil.network.ktor3)
 			}
 		}
         val commonTest by getting {
@@ -76,15 +82,6 @@ kotlin {
 				implementation(libs.kotlinx.coroutinesSwing)
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.logback.classic)
-
-                compileOnly(libs.proguard.base)
-                compileOnly(libs.proguard.gradle)
-                compileOnly(libs.jetbrains.annotations)
-                compileOnly(libs.json.json)
-                compileOnly(libs.log4j.core)
-                compileOnly(libs.log4j.api)
-                compileOnly(libs.semver)
-                compileOnly(libs.google.gson)
 			}
 		}
     }

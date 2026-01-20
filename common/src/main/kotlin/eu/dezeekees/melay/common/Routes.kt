@@ -12,9 +12,25 @@ object Routes {
 
         object User {
             const val NAME = "${Api.NAME}/user"
+            const val ME = "${Api.NAME}/@me"
+            const val COMMUNITIES = "${Api.NAME}/communities"
+        }
+
+        object Community {
+            const val NAME = "${Api.NAME}/community"
+            const val MEMBERS = "${NAME}/memberships"
+        }
+
+        object Channel {
+            const val NAME = "${Api.NAME}/channel"
+        }
+
+        object Message {
+            const val NAME = "${Api.NAME}/message"
+            const val CHANNEL = "${NAME}/channel"
         }
     }
-    object Ws {
+    object Socket {
         object Federation {
             const val NAME = "federation"
 
@@ -25,6 +41,10 @@ object Routes {
             object Stream {
                 const val NAME = "${Federation.NAME}.stream"
             }
+        }
+
+        object MelayClient {
+            const val CONNECTION_ROUTE = "/melay-client"
         }
     }
 }

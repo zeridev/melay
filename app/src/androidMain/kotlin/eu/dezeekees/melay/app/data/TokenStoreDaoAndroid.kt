@@ -7,6 +7,7 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import eu.dezeekees.melay.app.data.util.TokenSerializer
 import eu.dezeekees.melay.app.logic.model.auth.Token
 import eu.dezeekees.melay.app.logic.repository.TokenStoreRepository
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 
 class TokenStoreDaoAndroid(context: Context) : TokenStoreRepository {
@@ -24,4 +25,6 @@ class TokenStoreDaoAndroid(context: Context) : TokenStoreRepository {
     override suspend fun get(): Token? {
         return dataStore.data.firstOrNull()
     }
+
+    override val flow: Flow<Token?> = dataStore.data
 }

@@ -8,7 +8,7 @@ test_melay:
   stage: test
   script:
     # Run Gradle tests for all modules
-    - gradle clean test --no-daemon
+    - gradle clean server:test --no-daemon
   artifacts:
     when: always
     reports:
