@@ -29,20 +29,23 @@ class AuthService(
         domain: String,
         username: String,
         password: String
-    ): Result<Token, Error> =
-        authRepository.login(
+    ): Result<Token, Error>  {
+        val trimmedDomain = domain.trim()
+
+        return authRepository.login(
             LoginRequest(
                 username = username,
                 password = password
             ),
-            domain
+            trimmedDomain
         ).onSuccess {
             tokenStoreRepository.set(it)
             httpClientProvider.invalidate()
             val userData = userDataStoreRepository.get() ?: LocalUserData()
             val updatedLocalUserData = userData.copy(
-                remoteDomain = domain
+                remoteDomain = trimmedDomain
             )
             userDataStoreRepository.set(updatedLocalUserData)
         }
+    }
 }
