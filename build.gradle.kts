@@ -12,11 +12,25 @@ plugins {
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.ktlint) apply false
+
+    alias(libs.plugins.sonarqube)
+    alias(libs.plugins.jacoco)
 }
 
 subprojects {
     apply {
         plugin(rootProject.libs.plugins.ktlint.get().pluginId)
+    }
+
+    plugins.withId("org.jetbrains.kotlin.jvm") {
+        apply(plugin = "jacoco")
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "melay_melay")
+        property("sonar.organization", "melay")
     }
 }
 

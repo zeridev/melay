@@ -2,16 +2,19 @@ image: cimg/android:2025.11.1
 
 stages:
   - test
-  - build
 
 test_melay:
   stage: test
+  variables:
+    GRADLE_OPTS: "-Dorg.gradle.daemon=false"
   script:
-    # Run Gradle tests for all modules
-    - gradle clean server:test --no-daemon
+    # Server tests + coverage + SonarQube
+    - gradle :server:clean :server:test :server:jacocoTestReport sonar
   artifacts:
     when: always
     reports:
       junit:
-        - app/build/test-results/testReleaseUnitTest/*.xml
         - server/build/test-results/test/*.xml
+    paths:
+      # Optional: keep reports for debugging
+      - server/build/reports/jacoco/test/
