@@ -125,7 +125,7 @@ class CommunityRoutesTest : TestBase(), KoinTest {
     fun `remove membership returns ok`() = testBlock {
         whenever(mockUserCommunityMembershipRepository.removeMembership(any(), any())) doReturn Unit
 
-        val response = client.delete("${Routes.Api.Community.MEMBERS}/${membershipRequest.communityId}/${membershipRequest.userId}")
+        val response = client.delete("${Routes.Api.Community.MEMBERS}/${membershipRequest.communityId}")
 
         assertEquals(HttpStatusCode.OK, response.status)
     }
