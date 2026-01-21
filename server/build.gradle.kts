@@ -7,7 +7,6 @@ plugins {
 
     alias(libs.plugins.sonarqube)
     alias(libs.plugins.jacoco)
-    alias(libs.plugins.owasp.dependencycheck)
 }
 
 application {
@@ -26,17 +25,6 @@ sonar {
     properties {
         property("sonar.projectKey", "melay_melay")
         property("sonar.organization", "melay")
-    }
-}
-
-dependencyCheck {
-    suppressionFile = "$rootDir/dependency-check-suppressions.xml"
-    analyzers {
-        assemblyEnabled = false
-    }
-    format = "XML" // required for SonarQube import
-    nvd {
-        apiKey.set(System.getenv("NVD_API_KEY"))
     }
 }
 

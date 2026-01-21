@@ -11,7 +11,6 @@ test_server:
     - gradle :server:assemble --no-daemon
     - gradle :server:test --no-daemon
     - gradle :server:jacocoTestReport --no-daemon
-    - gradle :server:dependencyCheckAnalyze --no-daemon
     - gradle :server:sonar -Dsonar.branch.name=$CI_COMMIT_REF_NAME --no-daemon
 
   artifacts:

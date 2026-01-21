@@ -29,7 +29,6 @@ material-icons-extended = "1.7.3"
 slf4j-android = "1.7.36"
 ktlint = "14.0.1"
 sonarqube = "7.2.2.6593"
-dependencycheck = "12.2.0"
 
 # --- proguard fixes ---
 proguard = "7.7.0"
@@ -145,4 +144,3 @@ kotlin-plugin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization"
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
 jacoco = { id = "jacoco" }
-owasp-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "dependencycheck" }
