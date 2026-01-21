@@ -4,6 +4,9 @@ plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktor)
     alias(libs.plugins.kotlin.plugin.serialization)
+
+    alias(libs.plugins.sonarqube)
+    alias(libs.plugins.jacoco)
 }
 
 application {
@@ -15,6 +18,13 @@ ktor {
     openApi {
         title = "Melay Api"
         version = "0.0.1"
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "melay_melay")
+        property("sonar.organization", "melay")
     }
 }
 
