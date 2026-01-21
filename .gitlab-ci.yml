@@ -8,8 +8,9 @@ test_melay:
   variables:
     GRADLE_OPTS: "-Dorg.gradle.daemon=false"
   script:
-    # Server tests + coverage + SonarQube
-    - gradle :server:clean :server:test :server:jacocoTestReport sonar
+    - gradle clean build -x test --no-daemon
+    - gradle :server:test :server:jacocoTestReport sonar --no-daemon
+
   artifacts:
     when: always
     reports:
